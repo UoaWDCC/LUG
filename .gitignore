@@ -48,3 +48,8 @@ next-env.d.ts
 .env.keys
 .env.local
 .env.*.local
+
+# IDE / Editor
+.idea
+.vscode
+.zed/
