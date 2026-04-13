@@ -122,6 +122,7 @@ This section will be expanded later with deployment workflow details.
 | -------------- | --------------- |
 | Amanda Yap    | Project Manager |
 | William Tay     | Tech Lead       |
+| Carl Dela Pena  | Designer + Developer  |
 | James Mullane    | Developer  |
 | Riley Nicholls | Developer       |
 | Sonja Li       | Developer       |
