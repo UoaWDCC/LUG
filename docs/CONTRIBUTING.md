@@ -19,20 +19,26 @@ We use **Squash and merge**, so your pull request should represent one clear pie
 
 Use short, descriptive branch names.
 
-- With an issue number: `type/LUG-issue-number-short-description`
+- With an issue number: `type/issue-number-short-description`
 - Without an issue number: `type/short-description`
 
 Examples:
 
 ```text
-feat/LUG-12-add-login
-fix/LUG-25-navbar-bug
+feat/12-add-login
+fix/25-navbar-bug
 chore/update-readme
 ```
 
 ### Commit messages
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+Write the description in the **imperative mood**.
+
+- Use: `add login form`
+- Not: `added login form`
+
 
 Format:
 
@@ -43,27 +49,27 @@ type(scope): short description
 Examples:
 
 ```text
-feat(auth): add login form
-fix(navbar): align logo and title
+feat(login): add login form
+fix(navbar): fix navbar alignment on mobile
 chore(tooling): add husky pre-commit hook
 docs(readme): improve setup instructions
 ```
 
 ### Pull request titles
 
-Since pull requests are squash-merged, write PR titles clearly.
+Since pull requests are squash-merged, PR titles will resemble commit messages. They make it clear what work was done in the pull request.
 
 Format:
 
 ```text
-LUG-issue-number: Short clear description
+type(scope): short clear description
 ```
 
 Examples:
 
 ```text
-LUG-12: Add login functionality
-LUG-25: Fix navbar alignment on mobile
+feat(login): add login functionality
+fix(navbar): fix navbar alignment on mobile
 ```
 
 For tips on writing a good PR:
