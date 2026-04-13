@@ -7,12 +7,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
 
   // Keep Next.js generated/build artifacts ignored, and add repo-specific ignores here.
-  globalIgnores([
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ]);
 
 export default eslintConfig;
