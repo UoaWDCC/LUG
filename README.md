@@ -118,7 +118,8 @@ This section will be expanded later with deployment workflow details.
 
 ## Team
 
-| Name           | Role            |
-| -------------- | --------------- |
-| Amanda Yap    | Project Manager |
-| William Tay     | Tech Lead       |
+| Name        | Role            |
+|-------------|-----------------|
+| Amanda Yap  | Project Manager |
+| William Tay | Tech Lead       |
+| Samir Abbad | Developer       |
