@@ -27,9 +27,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <NavBar />
           <main className="flex-1">
-            <Container>
-              {children}
-            </Container>
+            <Container>{children}</Container>
           </main>
           {/* flex-1 ensures page content takes up the full space between navbar and footer */}
           <Footer />
