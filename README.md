@@ -122,7 +122,11 @@ This section will be expanded later with deployment workflow details.
 | -------------- | --------------- |
 | Amanda Yap    | Project Manager |
 | William Tay     | Tech Lead       |
+<<<<<<< docs/add-james-to-readme
 | James Mullane   | Developer |
+=======
+| Riley Nicholls | Developer      |
+>>>>>>> main
 | Chuan Li       | Developer       |
 |Finley Neilson | Software Dev |
 | Amin Farah     | Developer       |
