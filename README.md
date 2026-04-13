@@ -123,6 +123,7 @@ This section will be expanded later with deployment workflow details.
 | Amanda Yap    | Project Manager |
 | William Tay     | Tech Lead       |
 | Carl Dela Pena  | Designer + Developer  |
+| Riley Nicholls | Developer      |
 | Chuan Li       | Developer       |
 |Finley Neilson | Software Dev |
 | Amin Farah     | Developer       |
