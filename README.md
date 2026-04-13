@@ -123,3 +123,4 @@ This section will be expanded later with deployment workflow details.
 | Amanda Yap    | Project Manager |
 | William Tay     | Tech Lead       |
 | Riley Nicholls | Developer      |
+| Amin Farah     | Developer       |
