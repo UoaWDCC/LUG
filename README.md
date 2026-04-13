@@ -119,10 +119,11 @@ This section will be expanded later with deployment workflow details.
 ## Team
 
 | Name           | Role            |
-| -------------- | --------------- |
-| Amanda Yap    | Project Manager |
-| William Tay     | Tech Lead       |
-| Riley Nicholls | Developer      |
+|----------------|-----------------|
+| Amanda Yap     | Project Manager |
+| William Tay    | Tech Lead       |
+| Riley Nicholls | Developer       |
 | Chuan Li       | Developer       |
-|Finley Neilson | Software Dev |
+| Finley Neilson | Software Dev    |
 | Amin Farah     | Developer       |
+| Samir Abbad    | Developer       |
