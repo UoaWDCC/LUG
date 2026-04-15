@@ -117,7 +117,7 @@ Also make sure:
 
 - the app still runs locally with `pnpm dev`
 - the PR only contains relevant changes
-- the PR title is clear
+- the PR title is clear and follows the required format
 - the PR description explains what changed and why
 
 ## Documentation
