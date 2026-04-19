@@ -1,0 +1,36 @@
+// This is the Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Member {
+  id                   Int      @id @default(autoincrement())
+  name                 String
+  email                String   @unique
+  university           University
+  isReturning          Boolean
+  skillLevel           Int
+  upi                  String?
+  studentId            String?
+  faculty              String[]
+  programme            String?
+  yearLevel            String?
+  excerpt              String?
+  pitch                String?
+  potentialInvolvement String?
+  discordUser          String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+enum University {
+  UNIVERSITY_OF_AUCKLAND
+  OTHER
+}

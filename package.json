@@ -16,7 +16,15 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:status": "docker compose ps",
+    "db:reset": "docker compose down -v && docker compose up -d",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
@@ -28,7 +36,10 @@
     ]
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "^7.7.0",
     "next": "16.2.0",
+    "pg": "^8.20.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
@@ -38,11 +49,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "3.8.1",
+    "prisma": "^7.7.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
