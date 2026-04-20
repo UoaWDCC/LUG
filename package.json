@@ -24,7 +24,7 @@
     "db:reset": "docker compose down -v && docker compose up -d",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:sync": "prisma migrate deploy",
+    "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio"
   },
   "lint-staged": {

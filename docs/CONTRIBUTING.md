@@ -17,10 +17,10 @@ We use **Squash and merge**, so your pull request should represent one clear pie
 
 ### Branch names
 
-Use short, descriptive branch names.
+Branches follow one of the 2 formats below, where `type` matches one of the conventional commit types listed in the **Commit messages** section below.
 
-- With an issue number: `type/issue-number-short-description`
-- Without an issue number: `type/short-description`
+- With an issue number: `<type>/<issue-number>-<short-description>`
+- Without an issue number: `<type>/<short-description>`
 
 Examples:
 
@@ -32,12 +32,30 @@ chore/update-readme
 
 ### Commit messages
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
 Write the description in the **imperative mood**.
 
 - Use: `add login form`
 - Not: `added login form`
+
+
+**Example types :**
+
+| Type       | Use for                                  |
+| ---------- | ---------------------------------------- |
+| `feat`     | New user-facing functionality            |
+| `fix`      | Bug fix                                  |
+| `docs`     | Documentation only                       |
+| `style`    | Formatting, whitespace — no logic change |
+| `refactor` | Restructure with no behaviour change     |
+| `perf`     | Performance improvement                  |
+| `test`     | Adding or correcting tests               |
+| `chore`    | Tooling, dependencies, config            |
+| `ci`       | CI/CD pipeline changes                   |
+| `build`    | Build system changes                     |
+| `revert`   | Reverts a previous commit                |
+
 
 
 Format:

@@ -52,7 +52,6 @@ This repository uses **pnpm** as its package manager.
 
 - Use `pnpm` for dependency installation and scripts.
 - Do not use `npm` or `yarn` in this repository.
-- The project enforces pnpm-only installs via a preinstall check.
 
 ### Windows note: line endings
 
@@ -87,7 +86,7 @@ pnpm db:up
 6. Apply the existing migration history to your local database:
 
 ```bash
-pnpm db:sync
+pnpm db:deploy
 ```
 
 7. Generate the Prisma client:
@@ -109,7 +108,7 @@ Then open the local development URL shown in the terminal.
 If you pull changes that affect the Prisma schema, migrations, or generated Prisma client, run:
 
 ```bash
-pnpm db:sync
+pnpm db:deploy
 pnpm db:generate
 ```
 
@@ -137,7 +136,7 @@ As the project evolves, more detailed architecture documentation will be added u
 
 ## Repository structure
 
-This repository is still in the early setup stage, but currently follows a simple structure:
+This repository currently follows a simple structure:
 
 ```text
 src/

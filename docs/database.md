@@ -37,7 +37,7 @@ pnpm db:up
 4. Apply the existing migration history to your local database:
 
 ```bash
-pnpm db:sync
+pnpm db:deploy
 ```
 
 5. Generate Prisma Client:
@@ -109,8 +109,8 @@ Use the package scripts from the repo root rather than typing Docker/Prisma comm
 
   **Example:** `pnpm db:migrate --name add-admins`
 
-- `pnpm db:sync`  
-  Applies the migration files that already exist in the repository to your database. Use this when your local database needs to catch up to the repository state, such as during first-time setup or after pulling migration changes from someone else.
+- `pnpm db:deploy`  
+  Applies existing migration files in the repository to your database. Use this when your local database needs to catch up to the repository's current schema, such as during first-time setup or after pulling migration changes from someone else.
 
 - `pnpm db:studio`  
   Opens Prisma Studio to inspect the database in a browser.
@@ -123,7 +123,7 @@ Use these when setting up the project locally for the first time:
 
 ```bash
 pnpm db:up
-pnpm db:sync
+pnpm db:deploy
 pnpm db:generate
 ```
 
@@ -132,7 +132,7 @@ pnpm db:generate
 If you pull changes that affect the Prisma schema, migrations, or generated Prisma client, run:
 
 ```bash
-pnpm db:sync
+pnpm db:deploy
 pnpm db:generate
 ```
 
