@@ -53,6 +53,15 @@ This repository uses **pnpm** as its package manager.
 - Do not use `npm` or `yarn` in this repository.
 - The project enforces pnpm-only installs via a preinstall check.
 
+### Windows note: line endings
+
+If you are using Windows, configure Git to avoid checking files out with `CRLF` line endings, which can cause `pnpm format:check` / Prettier to fail on files you did not actually change.
+
+Run this once before cloning the repository:
+
+```bash
+git config --global core.autocrlf input
+
 ### Install dependencies
 
 ```bash
