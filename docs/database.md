@@ -1,7 +1,9 @@
 # Database workflow
 
 ## Stack
+
 The project uses:
+
 - **PostgreSQL** for the database
 - **Prisma** as the ORM
 - **Docker** for each developer’s local database setup
@@ -9,16 +11,45 @@ The project uses:
 Production is intended to use plain PostgreSQL as well, so local development is designed to stay close to that setup.
 
 ## Local database setup
+
 Each developer runs their **own local Postgres instance** using Docker.
 
 This means:
+
 - your local DB changes only affect your machine
 - resetting your DB does not affect anyone else
 - everyone can develop safely without sharing one mutable dev database
 
 The local database is started through Docker Compose from the repo root.
 
+## First-time local database setup
+
+From the repository root:
+
+1. Start Docker Desktop.
+2. Copy `.env.example` to `.env`.
+3. Start the local database:
+
+```bash
+pnpm db:up
+```
+
+4. Apply the existing migration history to your local database:
+
+```bash
+pnpm db:sync
+```
+
+5. Generate Prisma Client:
+
+```bash
+pnpm db:generate
+```
+
+At this point, your local database schema and generated Prisma client should match the current repository state.
+
 ## Prisma location
+
 Prisma is kept at the **project root** in the standard location:
 
 ```text
@@ -28,17 +59,21 @@ prisma/
 ```
 
 This is where:
+
 - the Prisma schema lives
 - migration history lives
 - database structure changes are tracked
 
 ## Environment files
+
 The repo includes a committed `.env.example` file and each developer creates their own local `.env`.
 
 ### `.env.example`
+
 This is the template for required environment variables.
 
 ### `.env`
+
 This is your actual local environment file and should **not** be committed.
 
 For local development, `.env` will usually use the **same `DATABASE_URL` value** as `.env.example`, because each developer is connecting to their own local Postgres container, not a shared remote database.
@@ -51,6 +86,7 @@ DATABASE_URL="postgresql://lug_user:lug_password@localhost:5432/lug_dev"
 ```
 
 ## Database scripts
+
 Use the package scripts from the repo root rather than typing Docker/Prisma commands manually where possible.
 
 - `pnpm db:up`  
@@ -71,13 +107,60 @@ Use the package scripts from the repo root rather than typing Docker/Prisma comm
 - `pnpm db:migrate --name <migration-name>`  
   Creates and applies a development migration from schema changes. This updates your local database schema and creates migration files, but in Prisma 7 it does **not** generate Prisma Client automatically.
 
-  <b>Example:</b> `pnpm db:migrate --name add-admins`
+  **Example:** `pnpm db:migrate --name add-admins`
 
-- `pnpm db:deploy`  
-  Applies existing migration files to a non-development database such as staging or production. It does not create new migrations. Use this for deployment environments, not for normal day-to-day local development.
+- `pnpm db:sync`  
+  Applies the migration files that already exist in the repository to your database. Use this when your local database needs to catch up to the repository state, such as during first-time setup or after pulling migration changes from someone else.
 
 - `pnpm db:studio`  
   Opens Prisma Studio to inspect the database in a browser.
+
+## When to use each database command
+
+### Normal local setup
+
+Use these when setting up the project locally for the first time:
+
+```bash
+pnpm db:up
+pnpm db:sync
+pnpm db:generate
+```
+
+### After pulling database-related changes
+
+If you pull changes that affect the Prisma schema, migrations, or generated Prisma client, run:
+
+```bash
+pnpm db:sync
+pnpm db:generate
+```
+
+### When changing the schema yourself
+
+If you are intentionally changing the database schema:
+
+1. update `prisma/schema.prisma`
+2. run:
+
+```bash
+pnpm db:migrate --name <migration-name>
+pnpm db:generate
+```
+
+`db:migrate` creates/applies the migration. In Prisma 7, it does **not** run `prisma generate` automatically, so `db:generate` must be run explicitly.
+
+## Generated Prisma client
+
+This project uses Prisma 7’s `prisma-client` generator with a custom output path under `src/generated/prisma`.
+
+That generated client is:
+
+- required for app code, type checking, and builds
+- generated locally with `pnpm db:generate`
+- not committed to git
+
+Because Prisma 7 no longer runs `prisma generate` automatically from `migrate dev`, developers need to run `pnpm db:generate` explicitly after schema changes and after pulling Prisma-related changes.
 
 ## Per-developer local databases
 Every developer has their **own local database**.
