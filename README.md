@@ -32,13 +32,11 @@ Current stack:
 - React
 - TypeScript
 - Tailwind CSS
+- PostgreSQL
 - ESLint
 - Prettier
 - pnpm
-
-Planned additions:
-
-- PostgreSQL
+- Docker (for local database setup)
 
 ## Getting started
 
@@ -72,9 +70,8 @@ Then open the local development URL shown in the terminal.
 
 ## Environment variables
 
-No environment variables are required at the current stage of the project.
-
-This section will be expanded once services such as the database and authentication are introduced.
+Local database development requires a `DATABASE_URL`.
+See `docs/database.md` for the current database setup and workflow.
 
 ## High-level architecture
 
