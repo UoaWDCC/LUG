@@ -1,27 +1,33 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
-// globalThis: the global object for the current JS runtime environment
-// ? means the property is optional
+/**
+ * The global object for the current JS runtime environment
+ */
 const globalForPrisma = globalThis as {
   prisma?: PrismaClient;
 };
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set.");
-}
+export function getPrisma() {
+  if (globalForPrisma.prisma) {
+    return globalForPrisma.prisma;
+  }
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL is not set.");
+  }
 
-// Creates (or reuses existing) Prisma client
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+  const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
+  });
+
+  const prisma = new PrismaClient({
     adapter,
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = prisma;
+  }
+
+  return prisma;
 }

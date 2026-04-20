@@ -1,6 +1,7 @@
-import { prisma } from "@/lib/db/prisma";
+import { getPrisma } from "@/lib/db/prisma";
 
 export default async function AdminMembersPage() {
+  const prisma = getPrisma();
   const members = await prisma.member.findMany({
     orderBy: { id: "asc" },
   });
