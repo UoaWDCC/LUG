@@ -1,6 +1,11 @@
+import { connection } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 
 export default async function AdminMembersPage() {
+  // Wait for an actual request before running the DB query.
+  // This prevents Next from trying to prerender this page at build time.
+  await connection();
+
   const prisma = getPrisma();
   const members = await prisma.member.findMany({
     orderBy: { id: "asc" },
