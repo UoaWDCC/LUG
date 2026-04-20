@@ -1,11 +1,15 @@
-export default function Admin() {
-  return (
-    <div>
-      <section>
-        <h1>Admin</h1>
+import Link from "next/link";
 
-        <p>Placeholder Admin</p>
-      </section>
-    </div>
+export default function AdminPage() {
+  return (
+    <main className="p-6">
+      <h1 className="text-2xl font-semibold">Admin</h1>
+
+      <div className="mt-6">
+        <Link href="/admin/members" className="underline">
+          View members
+        </Link>
+      </div>
+    </main>
   );
 }

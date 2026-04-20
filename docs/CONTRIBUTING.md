@@ -93,6 +93,7 @@ This project uses:
 | `pnpm format` | Runs Prettier across the repository and rewrites files. Use intentionally. |
 | `pnpm format:check` | Checks whether files match the expected Prettier formatting without modifying them. |
 | `pnpm build` | Builds the application for production. |
+| `pnpm check` | Runs the standard pre-PR checks: Prisma client generation, lint, typecheck, format check, and build. |
 
 ### Pre-commit hook
 
@@ -107,10 +108,7 @@ This only checks **staged files**. Before opening a pull request, still run the 
 Run:
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm format:check
-pnpm build
+pnpm check
 ```
 
 Also make sure:

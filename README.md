@@ -32,13 +32,11 @@ Current stack:
 - React
 - TypeScript
 - Tailwind CSS
+- PostgreSQL
 - ESLint
 - Prettier
 - pnpm
-
-Planned additions:
-
-- PostgreSQL
+- Docker (for local database setup)
 
 ## Getting started
 
@@ -48,6 +46,7 @@ Make sure you have the following installed:
 
 - Node.js 24.x
 - pnpm 10.33.0
+- Docker Desktop
 
 This repository uses **pnpm** as its package manager.
 
@@ -55,13 +54,49 @@ This repository uses **pnpm** as its package manager.
 - Do not use `npm` or `yarn` in this repository.
 - The project enforces pnpm-only installs via a preinstall check.
 
-### Install dependencies
+### Windows note: line endings
+
+If you are using Windows, configure Git to avoid checking files out with `CRLF` line endings, which can cause `pnpm format:check` / Prettier to fail on files you did not actually change.
+
+Run this once before cloning the repository:
+
+```bash
+git config --global core.autocrlf input
+```
+
+This is mainly a Windows line-ending issue. The repository uses committed line-ending rules via `.gitattributes` and expects `LF` line endings.
+
+
+### First-time local setup
+
+1. Clone the repository.
+2. Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-### Run the development server
+3. Copy `.env.example` to `.env`.
+4. Start Docker Desktop.
+5. Start the local database:
+
+```bash
+pnpm db:up
+```
+
+6. Apply the existing migration history to your local database:
+
+```bash
+pnpm db:sync
+```
+
+7. Generate the Prisma client:
+
+```bash
+pnpm db:generate
+```
+
+8. Start the development server:
 
 ```bash
 pnpm dev
@@ -69,12 +104,22 @@ pnpm dev
 
 Then open the local development URL shown in the terminal.
 
+### After pulling the latest changes
+
+If you pull changes that affect the Prisma schema, migrations, or generated Prisma client, run:
+
+```bash
+pnpm db:sync
+pnpm db:generate
+```
+
+If you are unsure whether Prisma-related changes were pulled, it is safe to run both commands anyway.
 
 ## Environment variables
 
-No environment variables are required at the current stage of the project.
+Local database development requires a `DATABASE_URL`.
 
-This section will be expanded once services such as the database and authentication are introduced.
+See `docs/database.md` for the current database setup and workflow.
 
 ## High-level architecture
 
@@ -98,8 +143,10 @@ This repository is still in the early setup stage, but currently follows a simpl
 src/
   app/
   components/
+  lib/
 public/
 docs/
+prisma/
 ```
 
 This structure may evolve as the project grows.
