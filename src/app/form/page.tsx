@@ -1,6 +1,14 @@
 import { createRegistrationForm } from "./actions";
+import { StartPage } from "./pages/StartPage";
+import { FinalPage } from "./pages/FinalPage";
 
-export default function FormPage() {
+export default async function FormPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page = "start" } = await searchParams;
+
   return (
     <section className="max-w-2xln border-2 border-green-500">
       <h1>LUG@UoA Member Registration Form 2026</h1>
@@ -14,54 +22,10 @@ export default function FormPage() {
           contacting lug.aucklanduni@gmail.com.`}</p>
 
       <form action={createRegistrationForm}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input name="email" id="email" type="email" required />
-        </div>
+        <input type="hidden" name="page" value={page} />
 
-        <fieldset>
-          <legend>
-            Have you registered with us previously and meet the following
-            conditions?
-          </legend>
-
-          <ul>
-            <li>You are a current student at the University of Auckland</li>
-            <li>
-              You previously gave us your UPI or Student ID when registering
-              your interest in 2025
-            </li>
-            <li>
-              You have not changed your programme of study since your last
-              application
-            </li>
-          </ul>
-
-          <p>
-            <i>
-              {
-                "If you are signing up for the first time, you should select 'no'"
-              }
-            </i>
-          </p>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="previouslyRegistered"
-                value="yes"
-                required
-              />
-              Yes
-            </label>
-
-            <label>
-              <input type="radio" name="previouslyRegistered" value="no" />
-              No
-            </label>
-          </div>
-        </fieldset>
+        {page === "start" && <StartPage />}
+        {page === "final" && <FinalPage />}
 
         <button type="submit">Submit</button>
       </form>
