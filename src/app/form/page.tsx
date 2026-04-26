@@ -1,3 +1,5 @@
+import { createRegistrationForm } from "./actions";
+
 export default function FormPage() {
   return (
     <section className="max-w-2xln border-2 border-green-500">
@@ -11,7 +13,7 @@ export default function FormPage() {
           transfer your information. You can modify or withdraw your response by
           contacting lug.aucklanduni@gmail.com.`}</p>
 
-      <form className="space-y-4">
+      <form action={createRegistrationForm}>
         <div>
           <label htmlFor="email">Email</label>
           <input name="email" id="email" type="email" required />
