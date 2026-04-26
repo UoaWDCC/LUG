@@ -17,6 +17,19 @@ export function NewMemberPage() {
         <label htmlFor="lastName">Last Name</label>
         <input name="lastName" id="lastName" type="lastName" required />
       </div>
+
+      <div>
+        <p>{"Do you attend The University of Auckland (UoA)?"}</p>
+        <label>
+          <input type="radio" name="uoaStudent" value="yes" required />
+          Yes
+        </label>
+
+        <label>
+          <input type="radio" name="uoaStudent" value="no" />
+          No
+        </label>
+      </div>
     </>
   );
 }

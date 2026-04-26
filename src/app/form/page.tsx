@@ -1,5 +1,9 @@
 import { createRegistrationForm } from "./actions";
 import { StartPage } from "./pages/StartPage";
+import { ReturningUoaPage } from "./pages/ReturningUoaPage";
+import { NewMemberPage } from "./pages/NewMemberPage";
+import { NewUoaPage } from "./pages/NewUoaPage";
+import { NewOtherPage } from "./pages/NewOtherPage";
 import { FinalPage } from "./pages/FinalPage";
 
 export default async function FormPage({
@@ -25,6 +29,10 @@ export default async function FormPage({
         <input type="hidden" name="page" value={page} />
 
         {page === "start" && <StartPage />}
+        {page === "returningUoa" && <ReturningUoaPage />}
+        {page === "newMember" && <NewMemberPage />}
+        {page === "newUoa" && <NewUoaPage />}
+        {page === "newOther" && <NewOtherPage />}
         {page === "final" && <FinalPage />}
 
         <button type="submit">Submit</button>

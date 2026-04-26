@@ -3,7 +3,7 @@ export function NewOtherPage() {
     <>
       <h2>Your affiliation</h2>
 
-      <input type="hidden" name="page" value="newUoa" />
+      <input type="hidden" name="page" value="newOther" />
 
       <div>
         <p>
