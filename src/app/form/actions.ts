@@ -9,12 +9,6 @@ export async function createRegistrationForm(formData: FormData) {
   const previouslyRegistered = formData.get("previouslyRegistered");
 
   let nextPage;
-  if (page === "start" || page === null) {
-    nextPage = "final";
-  } else {
-    nextPage = "start";
-  }
-
   switch (page) {
     case "start":
       const returning = formData.get("previouslyRegistered") as string;
@@ -24,7 +18,7 @@ export async function createRegistrationForm(formData: FormData) {
       nextPage = "final";
       break;
     case "newMember":
-      const attendsUoa = formData.get("uoaStudent") as string;
+      const attendsUoa = formData.get("attendUoa") as string;
       nextPage = attendsUoa === "yes" ? "newUoa" : "newOther";
       break;
     case "newUoa":

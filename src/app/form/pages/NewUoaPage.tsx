@@ -11,29 +11,102 @@ export function NewUoaPage() {
       <input type="hidden" name="page" value="newUoa" />
 
       <div>
-        <p>What is your username/UPI?</p>
+        <p>What is your username/UPI?*</p>
         <p>i.e. jbon007</p>
-        <label htmlFor="upi">UPI</label>
-        <input name="upi" id="upi" type="upi" required />
+        <label htmlFor="upi" />
+        <input
+          name="upi"
+          id="upi"
+          type="text"
+          placeholder="Your answer"
+          required
+        />
       </div>
 
       <div>
-        <p>And your student ID?</p>
+        <p>And your student ID?*</p>
         <p>i.e. 825179213</p>
-        <label htmlFor="studentId">student ID</label>
-        <input name="studentId" id="studentId" type="studentId" required />
+        <label htmlFor="studentId" />
+        <input
+          name="studentId"
+          id="studentId"
+          type="text"
+          placeholder="Your answer"
+          required
+        />
       </div>
 
       <div>
+        <p>{"What faculty or faculties are you enrolled in?*"}</p>
+        <p>If we miss your faculty, let us know!</p>
+
+        <div>
+          <label>
+            <input type="checkbox" name="faculties" value="engineeringDesign" />
+            Faculty of Engineering & Design
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="science" />
+            Faculty of Science
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="artsEducation" />
+            Faculty of Arts & Education
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="business" />
+            Business School
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="law" />
+            Auckland Law School
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="faculties"
+              value="medicalHealthScience"
+            />
+            Faculty of Medical and Health Sciences
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="liggins" />
+            Liggins Institute
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="bioengineering" />
+            Auckland Bioengineering Institute
+          </label>
+
+          <label>
+            <input type="checkbox" name="faculties" value="other" />
+            Other
+          </label>
+          <input type="text" name="otherFaculty" />
+        </div>
+      </div>
+
+      <div>
+        <p>What is your current programme of study?*</p>
         <p>
-          {
-            "What faculty or faculties are you enrolled in? If we miss your faculty, let us know!"
-          }
+          e.g. Bachelor of Engineering (Honours), Bachelor of Science, Master of
+          Arts, etc.
         </p>
-      </div>
-
-      <div>
-        <p>checkbox placeholder</p>
+        <label htmlFor="programme" />
+        <input
+          name="programme"
+          id="programme"
+          type="text"
+          placeholder="Your answer"
+          required
+        />
       </div>
 
       <div>
@@ -45,13 +118,33 @@ export function NewUoaPage() {
         </p>
         <div>
           <label>
-            <input type="radio" name="firstYear" value="yes" required />
+            <input type="radio" name="studyYear" value="year1" required />
             1st Year
           </label>
 
           <label>
-            <input type="radio" name="secondYear" value="no" />
-            2nd Year placeholder
+            <input type="radio" name="studyYear" value="year2" />
+            2nd Year
+          </label>
+
+          <label>
+            <input type="radio" name="studyYear" value="year3" />
+            3rd Year
+          </label>
+
+          <label>
+            <input type="radio" name="studyYear" value="year4" />
+            4th Year
+          </label>
+
+          <label>
+            <input type="radio" name="studyYear" value="year5Above" />
+            5h Year or later
+          </label>
+
+          <label>
+            <input type="radio" name="studyYear" value="yearGraduated" />
+            Graduated within 2 years
           </label>
         </div>
       </div>

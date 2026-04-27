@@ -4,14 +4,20 @@ export function StartPage() {
       <input type="hidden" name="page" value="start" />
 
       <div>
-        <label htmlFor="email">Email</label>
-        <input name="email" id="email" type="email" required />
+        <label htmlFor="email">Email*</label>
+        <input
+          name="email"
+          id="email"
+          type="email"
+          placeholder="Your email"
+          required
+        />
       </div>
 
       <fieldset>
         <legend>
           Have you registered with us previously and meet the following
-          conditions?
+          conditions?*
         </legend>
 
         <ul>
@@ -49,8 +55,6 @@ export function StartPage() {
           </label>
         </div>
       </fieldset>
-
-      {/* <button type="submit">Submit</button> */}
     </>
   );
 }

@@ -7,17 +7,18 @@ export function NewOtherPage() {
 
       <div>
         <p>
-          What institution or organisation are you affiliated with the most?
+          What institution or organisation are you affiliated with the most?*
         </p>
         <p>
           This can be the name of your university, your company, your research
           lab, etc.
         </p>
-        <label htmlFor="organisation">UPI</label>
+        <label htmlFor="organisation" />
         <input
           name="organisation"
           id="organisation"
           type="organisation"
+          placeholder="Your answer"
           required
         />
       </div>
@@ -28,20 +29,20 @@ export function NewOtherPage() {
           A nice excerpt about yourself can allow us to identify you in future
           club events.
         </p>
-        <label htmlFor="description">description</label>
+        <label htmlFor="description" />
         <input
           name="description"
           id="description"
           type="description"
-          required
+          placeholder="Your answer"
         />
       </div>
 
       <div>
         <p>Why do you want to join our club?</p>
         <p>Here is your chance to pitch yourself to us!</p>
-        <label htmlFor="pitch">pitch</label>
-        <input name="pitch" id="pitch" type="pitch" required />
+        <label htmlFor="pitch" />
+        <input name="pitch" id="pitch" type="pitch" placeholder="Your answer" />
       </div>
     </>
   );

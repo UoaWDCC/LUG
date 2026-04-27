@@ -10,29 +10,29 @@ export function ReturningUoaPage() {
       <input type="hidden" name="page" value="returningUoa" />
 
       <div>
-        <p>What is your username/UPI?</p>
+        <p>What is your username/UPI?*</p>
         <p>i.e. jbon007</p>
-        <label htmlFor="upi">UPI</label>
-        <input name="upi" id="upi" type="upi" required />
+        <label htmlFor="upi" />
+        <input
+          name="upi"
+          id="upi"
+          type="upi"
+          placeholder="Your answer"
+          required
+        />
       </div>
 
       <div>
-        <p>And your student ID?</p>
+        <p>And your student ID?*</p>
         <p>i.e. 825179213</p>
-        <label htmlFor="studentId">student ID</label>
-        <input name="studentId" id="studentId" type="studentId" required />
-      </div>
-
-      <div>
-        <label>
-          <input type="radio" name="attendUoa" value="yes" required />
-          Yes
-        </label>
-
-        <label>
-          <input type="radio" name="attendUoa" value="no" />
-          No
-        </label>
+        <label htmlFor="studentId" />
+        <input
+          name="studentId"
+          id="studentId"
+          type="studentId"
+          placeholder="Your answer"
+          required
+        />
       </div>
     </>
   );
