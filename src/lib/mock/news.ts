@@ -8,9 +8,9 @@ export type BlogItem = {
 export async function getNewsItems(): Promise<BlogItem[]> {
   return [
     {
-      title: "Example News Item",
-      slug: "example-news-item",
-      description: "This is an example news item.",
+      title: "Example Blog Item",
+      slug: "example-blog-item",
+      description: "This is an example blog item.",
       publishedAt: "2026-04-30",
     },
     {
