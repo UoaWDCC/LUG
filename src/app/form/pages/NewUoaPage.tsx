@@ -19,6 +19,7 @@ export function NewUoaPage() {
           id="upi"
           type="text"
           placeholder="Your answer"
+          pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
       </div>
@@ -32,6 +33,7 @@ export function NewUoaPage() {
           id="studentId"
           type="text"
           placeholder="Your answer"
+          pattern="[0-9]{9,10}"
           required
         />
       </div>

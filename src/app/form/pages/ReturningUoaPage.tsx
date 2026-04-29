@@ -16,8 +16,9 @@ export function ReturningUoaPage() {
         <input
           name="upi"
           id="upi"
-          type="upi"
+          type="text"
           placeholder="Your answer"
+          pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
       </div>
@@ -29,8 +30,9 @@ export function ReturningUoaPage() {
         <input
           name="studentId"
           id="studentId"
-          type="studentId"
+          type="text"
           placeholder="Your answer"
+          pattern="[0-9]{9,10}"
           required
         />
       </div>
