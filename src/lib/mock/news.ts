@@ -5,7 +5,7 @@ export type BlogItem = {
   publishedAt: string;
 };
 
-export async function getNewsItems(): Promise<BlogItem[]> {
+export async function getMockBlogItems(): Promise<BlogItem[]> {
   return [
     {
       title: "Example Blog Item",

@@ -1,10 +1,10 @@
 import { Feed } from "feed";
-import { getNewsItems, BlogItem } from "@/lib/mock/news";
+import { getMockBlogItems, BlogItem } from "@/lib/mock/news";
 
-const siteURL: string = "http://localhost:3000";
+const siteURL: string = process.env.NEXT_PUBLIC_SITE_URL || "";
 
 export async function GET() {
-  const blogItems: BlogItem[] = await getNewsItems();
+  const blogItems: BlogItem[] = await getMockBlogItems();
   const feed = new Feed({
     title: "The Linux User Group Website",
     description:
