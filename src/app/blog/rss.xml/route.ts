@@ -1,5 +1,5 @@
 import { Feed } from "feed";
-import { getMockBlogItems, BlogItem } from "@/lib/mock/news";
+import { getMockBlogItems, BlogItem } from "@/lib/mock/blog-posts";
 
 const siteURL: string = process.env.NEXT_PUBLIC_SITE_URL || "";
 
