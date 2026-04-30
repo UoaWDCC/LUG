@@ -2,40 +2,76 @@
 
 import { redirect } from "next/navigation";
 
-export async function createRegistrationForm(formData: FormData) {
+// 1. Update the type to include 'fields'
+export type FormState = {
+  error?: string;
+  fields?: {
+    email?: string;
+    previouslyRegistered?: string;
+  };
+} | null;
+
+export async function createRegistrationForm(
+  prevState: FormState,
+  formData: FormData,
+) {
   const page = formData.get("page") as string;
 
-  const email = formData.get("email");
-  const previouslyRegistered = formData.get("previouslyRegistered");
+  const email = formData.get("email") as string;
+  const previouslyRegistered = formData.get("previouslyRegistered") as string;
 
-  let nextPage;
+  let nextPage: string = "start";
+
   switch (page) {
     case "start":
-      const returning = formData.get("previouslyRegistered") as string;
-      nextPage = returning === "yes" ? "returningUoa" : "newMember";
+      // Check Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email || !emailRegex.test(email)) {
+        return {
+          error: "Please enter a valid email address (e.g., name@example.com).",
+          fields: { email, previouslyRegistered },
+        };
+      }
+
+      if (!previouslyRegistered) {
+        return {
+          error: "Please select whether you have registered previously.",
+          fields: { email }, // Keep the email so they don't have to re-type it
+        };
+      }
+
+      nextPage = previouslyRegistered === "yes" ? "returningUoa" : "newMember";
       break;
-    case "returningUoa":
-      nextPage = "final";
-      break;
+
     case "newMember":
       const attendsUoa = formData.get("attendUoa") as string;
+      if (!attendsUoa) {
+        return {
+          error: "Please select an option.",
+          fields: { email, previouslyRegistered },
+        };
+      }
       nextPage = attendsUoa === "yes" ? "newUoa" : "newOther";
       break;
+
+    case "returningUoa":
     case "newUoa":
-      nextPage = "final";
-      break;
     case "newOther":
       nextPage = "final";
       break;
+
     case "final":
-      // redirect to success page
+      // Final submission logic
+      console.log("Finalizing registration for:", email);
+      redirect("/success");
       break;
+
     default:
+      nextPage = "start";
       break;
   }
 
-  console.log("New Registration Attempt:", { email, previouslyRegistered });
-
-  // redirect("/form/success");
+  // Redirect to the next step
   redirect(`/form?page=${nextPage}`);
 }

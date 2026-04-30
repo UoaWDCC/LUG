@@ -5,6 +5,7 @@ import { NewMemberPage } from "./pages/NewMemberPage";
 import { NewUoaPage } from "./pages/NewUoaPage";
 import { NewOtherPage } from "./pages/NewOtherPage";
 import { FinalPage } from "./pages/FinalPage";
+import { RegistrationForm } from "./RegistrationForm";
 
 export default async function FormPage({
   searchParams,
@@ -25,18 +26,14 @@ export default async function FormPage({
           transfer your information. You can modify or withdraw your response by
           contacting lug.aucklanduni@gmail.com.`}</p>
 
-      <form action={createRegistrationForm}>
-        <input type="hidden" name="page" value={page} />
-
+      <RegistrationForm currentPage={page}>
         {page === "start" && <StartPage />}
         {page === "returningUoa" && <ReturningUoaPage />}
         {page === "newMember" && <NewMemberPage />}
         {page === "newUoa" && <NewUoaPage />}
         {page === "newOther" && <NewOtherPage />}
         {page === "final" && <FinalPage />}
-
-        <button type="submit">Submit</button>
-      </form>
+      </RegistrationForm>
     </section>
   );
 }

@@ -1,4 +1,10 @@
+"use client";
+
+import { useFormError } from "../RegistrationForm";
+
 export function StartPage() {
+  const state = useFormError();
+
   return (
     <>
       <input type="hidden" name="page" value="start" />
@@ -9,9 +15,12 @@ export function StartPage() {
           name="email"
           id="email"
           type="email"
-          placeholder="Your email"
-          required
+          defaultValue={state?.fields?.email || ""} // This is what prevents the clearing
+          className={`border p-2 w-full ${state?.error?.includes("email") ? "border-red-500" : "border-gray-300"}`}
         />
+        {state?.error?.includes("email") && (
+          <p className="text-red-600 text-sm italic mt-1">{state.error}</p>
+        )}
       </div>
 
       <fieldset>
@@ -37,6 +46,11 @@ export function StartPage() {
             {"If you are signing up for the first time, you should select 'no'"}
           </i>
         </p>
+
+        {/* Only show the error here if it's about the registration status */}
+        {state?.error?.includes("registered") && (
+          <p className="text-red-600 text-sm italic">{state.error}</p>
+        )}
 
         <div>
           <label>
