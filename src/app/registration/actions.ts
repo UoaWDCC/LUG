@@ -10,7 +10,7 @@ export type FormState = {
   };
 } | null;
 
-export async function createRegistrationForm(
+export async function submitRegistrationStep(
   prevState: FormState,
   formData: FormData,
 ) {
@@ -72,5 +72,5 @@ export async function createRegistrationForm(
   }
 
   // Redirect to the next step
-  redirect(`/form?page=${nextPage}`);
+  redirect(`/registration?page=${nextPage}`);
 }

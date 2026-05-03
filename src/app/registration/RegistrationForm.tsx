@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useActionState } from "react";
-import { createRegistrationForm, FormState } from "./actions";
+import { submitRegistrationStep, FormState } from "./actions";
 
 const FormStateContext = createContext<FormState>(null);
 
@@ -11,11 +11,11 @@ export function RegistrationForm({
   currentPage: string;
   children: React.ReactNode;
 }) {
-  const [state, formAction] = useActionState(createRegistrationForm, null);
+  const [state, submitAction] = useActionState(submitRegistrationStep, null);
 
   return (
     <FormStateContext.Provider value={state}>
-      <form action={formAction} noValidate className="flex flex-col gap-6">
+      <form action={submitAction} noValidate className="flex flex-col gap-6">
         <input type="hidden" name="page" value={currentPage} />
         {children}
         <button
