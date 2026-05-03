@@ -1,4 +1,3 @@
-import { createRegistrationForm } from "./actions";
 import { StartPage } from "./pages/StartPage";
 import { ReturningUoaPage } from "./pages/ReturningUoaPage";
 import { NewMemberPage } from "./pages/NewMemberPage";

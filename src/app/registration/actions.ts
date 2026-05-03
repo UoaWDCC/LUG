@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 
-// 1. Update the type to include 'fields'
 export type FormState = {
   error?: string;
   fields?: {
