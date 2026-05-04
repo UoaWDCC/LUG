@@ -8,12 +8,10 @@ export function FinalPage() {
         }
       </p>
 
-      <input type="hidden" name="page" value="final" />
-
       <p>final section placeholder</p>
 
-      <div>
-        <p>{"How much do you currently know about Linux?*"}</p>
+      <fieldset>
+        <legend>How much do you currently know about Linux?*</legend>
         <p>
           {
             "Everyone is welcome, regardless of skill level or operating system choice!"
@@ -21,39 +19,43 @@ export function FinalPage() {
         </p>
         <div>
           <label>
-            <input type="radio" name="skill" value="0" required />
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="NOTHING"
+              required
+            />
             Nothing
           </label>
-
           <label>
-            <input type="radio" name="skill" value="1" />I am aware of its
-            existence
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="AWARE_OF_EXISTENCE"
+            />
+            I am aware of its existence
           </label>
-
           <label>
-            <input type="radio" name="skill" value="2" />I consider myself a
-            beginner user
+            <input type="radio" name="linuxSkillLevel" value="BEGINNER_USER" />I
+            consider myself a beginner user
           </label>
-
           <label>
-            <input type="radio" name="skill" value="3" />I consider myself a
-            regular user
+            <input type="radio" name="linuxSkillLevel" value="REGULAR_USER" />I
+            consider myself a regular user
           </label>
-
           <label>
-            <input type="radio" name="skill" value="4" />I consider myself a
-            power user
+            <input type="radio" name="linuxSkillLevel" value="POWER_USER" />I
+            consider myself a power user
           </label>
-
           <label>
-            <input type="radio" name="skill" value="5" />I maintain or
-            contribute to packages & software for GNU/Linux
+            <input type="radio" name="linuxSkillLevel" value="CONTRIBUTOR" />I
+            maintain or contribute to software for GNU/Linux
           </label>
         </div>
-      </div>
+      </fieldset>
 
-      <div>
-        <p>{"What is your potential involvement in the LUG?"}</p>
+      <fieldset>
+        <legend>What is your potential involvement in the LUG?</legend>
         <p>
           Checking any of these boxes will add you to our email newsletter. You
           can unsubscribe at any time by emailing lug.aucklanduni@gmail.com
@@ -61,35 +63,48 @@ export function FinalPage() {
 
         <div>
           <label>
-            <input type="checkbox" name="involvement" value="attend" />
+            <input
+              type="checkbox"
+              name="potentialInvolvement"
+              value="ATTENDING"
+            />
             Attending events
           </label>
-
           <label>
-            <input type="checkbox" name="involvement" value="speak" />
+            <input
+              type="checkbox"
+              name="potentialInvolvement"
+              value="SPEAKING"
+            />
             Speaking at events
           </label>
-
           <label>
-            <input type="checkbox" name="involvement" value="executive" />
+            <input
+              type="checkbox"
+              name="potentialInvolvement"
+              value="EXECUTIVE"
+            />
             Being an executive
           </label>
-
           <label>
-            <input type="checkbox" name="involvement" value="project" />
+            <input
+              type="checkbox"
+              name="potentialInvolvement"
+              value="PROJECTS"
+            />
             Participating in a software development project
           </label>
         </div>
-      </div>
+      </fieldset>
 
       <div>
-        <p>What is your Discord username or handle?</p>
+        <label htmlFor="discordUsername">
+          What is your Discord username or handle?
+        </label>
         <p>
-          LUG@UoA hosts a Discord server where members can discuss Linux, free
-          and open source software and technology in general. The Discord link
-          will be shown when you submit this form.
+          LUG@UoA hosts a Discord server. The link will be shown after
+          submission.
         </p>
-        <label htmlFor="discordUsername" />
         <input
           name="discordUsername"
           id="discordUsername"

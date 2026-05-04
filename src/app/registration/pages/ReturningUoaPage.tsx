@@ -7,12 +7,9 @@ export function ReturningUoaPage() {
         questions to wrap things up.
       </p>
 
-      <input type="hidden" name="page" value="returningUoa" />
-
       <div>
-        <p>What is your username/UPI?*</p>
+        <label htmlFor="upi">What is your username/UPI?*</label>
         <p>i.e. jbon007</p>
-        <label htmlFor="upi" />
         <input
           name="upi"
           id="upi"
@@ -24,9 +21,8 @@ export function ReturningUoaPage() {
       </div>
 
       <div>
-        <p>And your student ID?*</p>
+        <label htmlFor="studentId">And your student ID?*</label>
         <p>i.e. 825179213</p>
-        <label htmlFor="studentId" />
         <input
           name="studentId"
           id="studentId"

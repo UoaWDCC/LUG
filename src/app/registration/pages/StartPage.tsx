@@ -7,8 +7,6 @@ export function StartPage() {
 
   return (
     <>
-      <input type="hidden" name="page" value="start" />
-
       <div>
         <label htmlFor="email">Email*</label>
         <input
@@ -47,7 +45,6 @@ export function StartPage() {
           </i>
         </p>
 
-        {/* Only show the error here if it's about the registration status */}
         {state?.error?.includes("registered") && (
           <p className="text-red-600 text-sm italic">{state.error}</p>
         )}

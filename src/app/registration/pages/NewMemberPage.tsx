@@ -3,11 +3,8 @@ export function NewMemberPage() {
     <>
       <h2>Name & University Status</h2>
 
-      <input type="hidden" name="page" value="newMember" />
-
       <div>
-        <p>What is your first name?*</p>
-        <label htmlFor="firstName" />
+        <label htmlFor="firstName">What is your first name?*</label>
         <input
           name="firstName"
           id="firstName"
@@ -18,9 +15,8 @@ export function NewMemberPage() {
       </div>
 
       <div>
-        <p>And your last name?*</p>
+        <label htmlFor="lastName">And your last name?*</label>
         <p>If you do not have a last name, type N/A.</p>
-        <label htmlFor="lastName" />
         <input
           name="lastName"
           id="lastName"
@@ -30,18 +26,20 @@ export function NewMemberPage() {
         />
       </div>
 
-      <div>
-        <p>{"Do you attend The University of Auckland (UoA)?*"}</p>
-        <label>
-          <input type="radio" name="attendUoa" value="yes" required />
-          Yes
-        </label>
+      <fieldset>
+        <legend>Do you attend The University of Auckland (UoA)?*</legend>
+        <div>
+          <label>
+            <input type="radio" name="attendUoa" value="yes" required />
+            Yes
+          </label>
 
-        <label>
-          <input type="radio" name="attendUoa" value="no" />
-          No
-        </label>
-      </div>
+          <label>
+            <input type="radio" name="attendUoa" value="no" />
+            No
+          </label>
+        </div>
+      </fieldset>
     </>
   );
 }

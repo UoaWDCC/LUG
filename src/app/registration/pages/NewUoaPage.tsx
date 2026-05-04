@@ -3,17 +3,14 @@ export function NewUoaPage() {
     <>
       <h2>Your student details with The University of Auckland</h2>
       <p>
-        {
-          "As a registered club at the University of Auckland, we are required to collect information about our members who are UoA students or staff."
-        }
+        As a registered club at the University of Auckland, we are required to
+        collect information about our members who are UoA students or
+        staff.{" "}
       </p>
 
-      <input type="hidden" name="page" value="newUoa" />
-
       <div>
-        <p>What is your username/UPI?*</p>
+        <label htmlFor="upi">What is your username/UPI?*</label>
         <p>i.e. jbon007</p>
-        <label htmlFor="upi" />
         <input
           name="upi"
           id="upi"
@@ -25,9 +22,8 @@ export function NewUoaPage() {
       </div>
 
       <div>
-        <p>And your student ID?*</p>
+        <label htmlFor="studentId">And your student ID?*</label>
         <p>i.e. 825179213</p>
-        <label htmlFor="studentId" />
         <input
           name="studentId"
           id="studentId"
@@ -38,8 +34,8 @@ export function NewUoaPage() {
         />
       </div>
 
-      <div>
-        <p>{"What faculty or faculties are you enrolled in?*"}</p>
+      <fieldset>
+        <legend>What faculty or faculties are you enrolled in?*</legend>
         <p>If we miss your faculty, let us know!</p>
 
         <div>
@@ -91,17 +87,27 @@ export function NewUoaPage() {
             <input type="checkbox" name="faculties" value="other" />
             Other
           </label>
-          <input type="text" name="otherFaculty" />
+
+          <label htmlFor="otherFaculty" className="sr-only">
+            Please specify other faculty
+          </label>
+          <input
+            type="text"
+            name="otherFaculty"
+            id="otherFaculty"
+            placeholder="Specify other"
+          />
         </div>
-      </div>
+      </fieldset>
 
       <div>
-        <p>What is your current programme of study?*</p>
+        <label htmlFor="programme">
+          What is your current programme of study?*
+        </label>
         <p>
           e.g. Bachelor of Engineering (Honours), Bachelor of Science, Master of
           Arts, etc.
         </p>
-        <label htmlFor="programme" />
         <input
           name="programme"
           id="programme"
@@ -111,8 +117,8 @@ export function NewUoaPage() {
         />
       </div>
 
-      <div>
-        <p>{"What is your current year of study?"}</p>
+      <fieldset>
+        <legend>What is your current year of study?</legend>
         <p>
           {
             "Note to those who have progressed from one degree to another at UoA (e.g. from undergrad to postgrad, from one Bachelor degree to another): Your year of study is based on your current degree, not the total number of years that you have accumulated at UoA.  For instance, if it is your first year doing a Master's degree after doing a Bachelor's degree, then you are at your 1st Year."
@@ -149,7 +155,7 @@ export function NewUoaPage() {
             Graduated within 2 years
           </label>
         </div>
-      </div>
+      </fieldset>
     </>
   );
 }

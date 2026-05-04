@@ -17,6 +17,14 @@ export function RegistrationForm({
     <FormStateContext.Provider value={state}>
       <form action={submitAction} noValidate className="flex flex-col gap-6">
         <input type="hidden" name="page" value={currentPage} />
+
+        {/* Generic Error Message */}
+        {state?.error && (
+          <div role="alert" style={{ color: "red" }}>
+            <strong>Error:</strong> {state.error}
+          </div>
+        )}
+
         {children}
         <button
           type="submit"
