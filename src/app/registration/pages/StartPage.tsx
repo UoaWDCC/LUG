@@ -53,7 +53,7 @@ export function StartPage() {
           <label>
             <input
               type="radio"
-              name="previouslyRegistered"
+              name="isConditionalReturningMember"
               value="yes"
               required
             />
@@ -61,7 +61,11 @@ export function StartPage() {
           </label>
 
           <label>
-            <input type="radio" name="previouslyRegistered" value="no" />
+            <input
+              type="radio"
+              name="isConditionalReturningMember"
+              value="no"
+            />
             No
           </label>
         </div>

@@ -30,12 +30,17 @@ export function NewMemberPage() {
         <legend>Do you attend The University of Auckland (UoA)?*</legend>
         <div>
           <label>
-            <input type="radio" name="attendUoa" value="yes" required />
+            <input
+              type="radio"
+              name="isCurrentUoaStudent"
+              value="yes"
+              required
+            />
             Yes
           </label>
 
           <label>
-            <input type="radio" name="attendUoa" value="no" />
+            <input type="radio" name="isCurrentUoaStudent" value="no" />
             No
           </label>
         </div>

@@ -40,51 +40,51 @@ export function NewUoaPage() {
 
         <div>
           <label>
-            <input type="checkbox" name="faculties" value="engineeringDesign" />
+            <input type="checkbox" name="faculty" value="engineeringDesign" />
             Faculty of Engineering & Design
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="science" />
+            <input type="checkbox" name="faculty" value="science" />
             Faculty of Science
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="artsEducation" />
+            <input type="checkbox" name="faculty" value="artsEducation" />
             Faculty of Arts & Education
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="business" />
+            <input type="checkbox" name="faculty" value="business" />
             Business School
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="law" />
+            <input type="checkbox" name="faculty" value="law" />
             Auckland Law School
           </label>
 
           <label>
             <input
               type="checkbox"
-              name="faculties"
+              name="faculty"
               value="medicalHealthScience"
             />
             Faculty of Medical and Health Sciences
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="liggins" />
+            <input type="checkbox" name="faculty" value="liggins" />
             Liggins Institute
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="bioengineering" />
+            <input type="checkbox" name="faculty" value="bioengineering" />
             Auckland Bioengineering Institute
           </label>
 
           <label>
-            <input type="checkbox" name="faculties" value="other" />
+            <input type="checkbox" name="faculty" value="other" />
             Other
           </label>
 
@@ -126,32 +126,32 @@ export function NewUoaPage() {
         </p>
         <div>
           <label>
-            <input type="radio" name="studyYear" value="year1" required />
+            <input type="radio" name="yearLevel" value="year1" required />
             1st Year
           </label>
 
           <label>
-            <input type="radio" name="studyYear" value="year2" />
+            <input type="radio" name="yearLevel" value="year2" />
             2nd Year
           </label>
 
           <label>
-            <input type="radio" name="studyYear" value="year3" />
+            <input type="radio" name="yearLevel" value="year3" />
             3rd Year
           </label>
 
           <label>
-            <input type="radio" name="studyYear" value="year4" />
+            <input type="radio" name="yearLevel" value="year4" />
             4th Year
           </label>
 
           <label>
-            <input type="radio" name="studyYear" value="year5Above" />
+            <input type="radio" name="yearLevel" value="year5Above" />
             5h Year or later
           </label>
 
           <label>
-            <input type="radio" name="studyYear" value="yearGraduated" />
+            <input type="radio" name="yearLevel" value="yearGraduated" />
             Graduated within 2 years
           </label>
         </div>

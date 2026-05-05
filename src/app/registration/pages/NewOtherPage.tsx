@@ -4,7 +4,7 @@ export function NewOtherPage() {
       <h2>Your affiliation</h2>
 
       <div>
-        <label htmlFor="organisation">
+        <label htmlFor="primaryAffiliation">
           What institution or organisation are you affiliated with the most?*
         </label>
         <p>
@@ -12,8 +12,8 @@ export function NewOtherPage() {
           lab, etc.
         </p>
         <input
-          name="organisation"
-          id="organisation"
+          name="primaryAffiliation"
+          id="primaryAffiliation"
           type="text"
           placeholder="Your answer"
           required
@@ -21,14 +21,14 @@ export function NewOtherPage() {
       </div>
 
       <div>
-        <label htmlFor="description"> Tell us more about yourself</label>
+        <label htmlFor="nonUoaExcerpt"> Tell us more about yourself</label>
         <p>
           A nice excerpt about yourself can allow us to identify you in future
           club events.
         </p>
         <textarea
-          name="description"
-          id="description"
+          name="nonUoaExcerpt"
+          id="nonUoaExcerpt"
           placeholder="Your answer"
         />
       </div>
