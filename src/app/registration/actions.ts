@@ -166,7 +166,7 @@ export async function submitRegistrationStep(
 
       // Final submission logic
       console.log("Finalizing registration for:", newData.email);
-      cookieStore.delete("formState");
+      cookieStore.delete({ name: "formState", path: "/registration" });
       redirect("/success");
       break;
 
@@ -175,7 +175,7 @@ export async function submitRegistrationStep(
       break;
   }
 
-  // save data to cookie
+  // Save data to cookie
   cookieStore.set(
     "formState",
     JSON.stringify({ ...newData, page: nextPage }),
@@ -183,5 +183,5 @@ export async function submitRegistrationStep(
   );
 
   // Redirect to the next step
-  redirect(`/registration?page=${nextPage}`);
+  redirect("/registration");
 }

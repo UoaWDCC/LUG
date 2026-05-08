@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 import { StartPage } from "./pages/StartPage";
 import { ReturningUoaPage } from "./pages/ReturningUoaPage";
 import { NewMemberPage } from "./pages/NewMemberPage";
@@ -6,12 +8,10 @@ import { NewOtherPage } from "./pages/NewOtherPage";
 import { FinalPage } from "./pages/FinalPage";
 import { RegistrationForm } from "./RegistrationForm";
 
-export default async function FormPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string }>;
-}) {
-  const { page = "start" } = await searchParams;
+export default async function FormPage() {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get("formState")?.value;
+  const { page = "start" } = raw ? JSON.parse(raw) : {};
 
   return (
     <section className="max-w-2xln border-2 border-green-500">
