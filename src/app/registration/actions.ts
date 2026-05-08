@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export type FormState = {
   error?: string;
@@ -11,6 +12,7 @@ export type FormState = {
 
     isConditionalReturningMember?: string;
 
+    // Asked for non-conditional-returning members
     isCurrentUoaStudent?: string;
 
     // UoA student fields
@@ -23,7 +25,7 @@ export type FormState = {
     yearLevel?: string;
 
     // Only for non-UoA students
-    primaryAffiliation?: string;
+    primaryAffiliation?: string[];
     nonUoaExcerpt?: string;
     nonUoaPitch?: string;
 
@@ -34,21 +36,38 @@ export type FormState = {
   };
 } | null;
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "strict" as const,
+  path: "/registration",
+};
+
 export async function submitRegistrationStep(
   prevState: FormState,
   formData: FormData,
 ) {
+  const cookieStore = await cookies();
+
+  // Load previously saved data
+  const raw = cookieStore.get("formState")?.value;
+  const prev = raw ? JSON.parse(raw) : {};
+
   const page = formData.get("page") as string;
 
-  const email = formData.get("email") as string;
-  const isConditionalReturningMember = formData.get(
-    "isConditionalReturningMember",
-  ) as string;
+  const { page: _, ...fields } = Object.fromEntries(formData); // strip page field
+  const newData = { ...prev, ...fields }; // merge old and new data
 
   let nextPage: string = "start";
 
   switch (page) {
     case "start":
+      // Get required inputs
+      const email = formData.get("email") as string;
+      const isConditionalReturningMember = formData.get(
+        "isConditionalReturningMember",
+      ) as string;
+
       // Check Email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -71,25 +90,83 @@ export async function submitRegistrationStep(
       break;
 
     case "newMember":
+      const firstName = formData.get("firstName") as string;
+      const lastName = formData.get("lastName") as string;
       const isCurrentUoaStudent = formData.get("isCurrentUoaStudent") as string;
-      if (!isCurrentUoaStudent) {
+
+      if (!firstName || !lastName || !isCurrentUoaStudent) {
         return {
           error: "Please select an option.",
-          fields: { email, isConditionalReturningMember },
+          fields: {},
         };
       }
+
       nextPage = isCurrentUoaStudent === "yes" ? "newUoa" : "newOther";
       break;
 
-    case "returningUoa":
-    case "newUoa":
+    case "newUoa": {
+      const upi = formData.get("upi") as string;
+      const studentId = formData.get("studentId") as string;
+      const faculties = formData.getAll("faculty") as string[];
+      const programme = formData.get("programme") as string;
+      const yearLevel = formData.get("yearLevel") as string;
+
+      if (
+        !upi ||
+        !studentId ||
+        faculties.length == 0 ||
+        !programme ||
+        !yearLevel
+      ) {
+        return {
+          error: "Please select an option.",
+          fields: {},
+        };
+      }
+
+      nextPage = "final";
+      break;
+    }
     case "newOther":
+      const primaryAffiliation = formData.get("primaryAffiliation") as string;
+
+      if (!primaryAffiliation) {
+        return {
+          error: "Please select an option.",
+          fields: {},
+        };
+      }
+
       nextPage = "final";
       break;
 
+    case "returningUoa": {
+      const upi = formData.get("upi") as string;
+      const studentId = formData.get("studentId") as string;
+
+      if (!upi || !studentId) {
+        return {
+          error: "Please select an option.",
+          fields: {},
+        };
+      }
+
+      nextPage = "final";
+      break;
+    }
     case "final":
+      const linuxSkillLevel = formData.get("linuxSkillLevel") as string;
+
+      if (!linuxSkillLevel) {
+        return {
+          error: "Please select an option.",
+          fields: {},
+        };
+      }
+
       // Final submission logic
-      console.log("Finalizing registration for:", email);
+      console.log("Finalizing registration for:", newData.email);
+      cookieStore.delete("formState");
       redirect("/success");
       break;
 
@@ -97,6 +174,13 @@ export async function submitRegistrationStep(
       nextPage = "start";
       break;
   }
+
+  // save data to cookie
+  cookieStore.set(
+    "formState",
+    JSON.stringify({ ...newData, page: nextPage }),
+    COOKIE_OPTIONS,
+  );
 
   // Redirect to the next step
   redirect(`/registration?page=${nextPage}`);
