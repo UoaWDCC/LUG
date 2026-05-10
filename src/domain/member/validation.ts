@@ -14,14 +14,26 @@ export function validateMemberRegistration(
     return { ok: false, error: requiredFields.error };
   }
 
-  if (!isValidEmail(parsedRegistrationForm.email)) {
-    return {
-      ok: false,
-      error: { message: "Email invalid: please enter a valid email address" },
-    };
+  const fieldContent = validateFields(parsedRegistrationForm);
+  if (fieldContent.fieldsValid == false) {
+    return { ok: false, error: fieldContent.error };
   }
 
   return { ok: true, data: toMemberRegistrationObject(parsedRegistrationForm) };
+}
+
+function validateFields(
+  parsed: ParsedRegistrationFormSubmission,
+):
+  | { fieldsValid: true }
+  | { fieldsValid: false; error: RegistrationFormValidationError } {
+  if (!isValidEmail(parsed.email)) {
+    return {
+      fieldsValid: false,
+      error: { message: "Email invalid: please enter a valid email address" },
+    };
+  }
+  return { fieldsValid: true };
 }
 
 function isValidEmail(email: string): boolean {
@@ -47,17 +59,17 @@ function hasRequiredFields(
     "potentialInvolvement",
   ];
   const errorDisplayNames: string[] = [
-    "first name",
-    "last name",
-    "email",
-    "linux skill level",
-    "potential involvement",
+    "First name",
+    "Last name",
+    "Email",
+    "Linux skill level",
+    "Potential involvement",
   ];
   for (const field of requiredFields) {
     if (!(field in parsed) || !parsed[field]) {
       const displayName = errorDisplayNames[requiredFields.indexOf(field)];
       return {
-        valid: false,
+        hasRequiredFields: false,
         error: { message: "${displayName} field is required" },
       };
     }
