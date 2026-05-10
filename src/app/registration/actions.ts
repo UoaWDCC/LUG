@@ -111,9 +111,14 @@ export async function submitRegistrationStep(
       const programme = formData.get("programme") as string;
       const yearLevel = formData.get("yearLevel") as string;
 
+      const upiRegex = /^[a-z]{3,4}\d{3}$/i;
+      const studentIdRegex = /^\d{9,10}$/;
+
       if (
         !upi ||
+        !upiRegex.test(upi) ||
         !studentId ||
+        !studentIdRegex.test(studentId) ||
         faculties.length == 0 ||
         !programme ||
         !yearLevel
@@ -144,7 +149,15 @@ export async function submitRegistrationStep(
       const upi = formData.get("upi") as string;
       const studentId = formData.get("studentId") as string;
 
-      if (!upi || !studentId) {
+      const upiRegex = /^[a-z]{3,4}\d{3}$/i;
+      const studentIdRegex = /^\d{9,10}$/;
+
+      if (
+        !upi ||
+        !upiRegex.test(upi) ||
+        !studentId ||
+        !studentIdRegex.test(studentId)
+      ) {
         return {
           error: "Please select an option.",
           fields: {},
