@@ -3,7 +3,7 @@ export type ParsedRegistrationFormSubmission = {
   lastName: string | null;
   email: string | null;
 
-  isEligibleReturningUoaStudent: string | null;
+  isConditionalReturningMember: string | null;
   isCurrentUoaStudent: string | null;
 
   upi: string | null;
@@ -13,9 +13,12 @@ export type ParsedRegistrationFormSubmission = {
   programme: string | null;
   yearLevel: string | null;
 
+  primaryAffiliation: string | null;
+  nonUoaExcerpt: string | null;
+  nonUoaPitch: string | null;
+
   linuxSkillLevel: string | null;
   potentialInvolvement: string[];
-
   discordUsername: string | null;
 };
 
@@ -44,9 +47,9 @@ export function parseRegistrationFormData(
     lastName: getTextField(formData, "lastName"),
     email: getTextField(formData, "email"),
 
-    isEligibleReturningUoaStudent: getTextField(
+    isConditionalReturningMember: getTextField(
       formData,
-      "isEligibleReturningUoaStudent",
+      "isConditionalReturningMember",
     ),
     isCurrentUoaStudent: getTextField(formData, "isCurrentUoaStudent"),
 
@@ -57,9 +60,12 @@ export function parseRegistrationFormData(
     programme: getTextField(formData, "programme"),
     yearLevel: getTextField(formData, "yearLevel"),
 
+    primaryAffiliation: getTextField(formData, "primaryAffiliation"),
+    nonUoaExcerpt: getTextField(formData, "nonUoaExcerpt"),
+    nonUoaPitch: getTextField(formData, "nonUoaPitch"),
+
     linuxSkillLevel: getTextField(formData, "linuxSkillLevel"),
     potentialInvolvement: getCheckboxGroup(formData, "potentialInvolvement"),
-
     discordUsername: getTextField(formData, "discordUsername"),
   };
 }
