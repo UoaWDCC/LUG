@@ -1,4 +1,4 @@
-export function NewOtherPage() {
+export function NewNonUoaPage() {
   return (
     <>
       <h2>Your affiliation</h2>

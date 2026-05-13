@@ -4,7 +4,7 @@ import { StartPage } from "./pages/StartPage";
 import { ReturningUoaPage } from "./pages/ReturningUoaPage";
 import { NewMemberPage } from "./pages/NewMemberPage";
 import { NewUoaPage } from "./pages/NewUoaPage";
-import { NewOtherPage } from "./pages/NewOtherPage";
+import { NewNonUoaPage } from "./pages/NewNonUoaPage";
 import { FinalPage } from "./pages/FinalPage";
 import { RegistrationForm } from "./RegistrationForm";
 
@@ -30,7 +30,7 @@ export default async function FormPage() {
         {page === "returningUoa" && <ReturningUoaPage />}
         {page === "newMember" && <NewMemberPage />}
         {page === "newUoa" && <NewUoaPage />}
-        {page === "newOther" && <NewOtherPage />}
+        {page === "newNonUoa" && <NewNonUoaPage />}
         {page === "final" && <FinalPage />}
       </RegistrationForm>
     </section>

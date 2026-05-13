@@ -3,65 +3,80 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
-export type FormState = {
+type RegistrationPage =
+  | "start"
+  | "returningUoa"
+  | "newMember"
+  | "newUoa"
+  | "newNonUoa"
+  | "final";
+
+type RegistrationDraft = {
+  page: RegistrationPage;
+
+  // Start page
+  email?: string;
+  isConditionalReturningMember?: string;
+
+  // New member page
+  firstName?: string;
+  lastName?: string;
+  isCurrentUoaStudent?: string;
+
+  // Returning/current UoA fields
+  upi?: string;
+  studentId?: string;
+
+  // Current UoA only
+  faculty?: string[];
+  programme?: string;
+  yearLevel?: string;
+
+  // Non-UoA only
+  primaryAffiliation?: string;
+  nonUoaExcerpt?: string;
+  nonUoaPitch?: string;
+
+  // Final page
+  linuxSkillLevel?: string;
+  potentialInvolvement?: string[];
+  discordUsername?: string;
+};
+
+export type RegistrationFormState = {
   error?: string;
-  fields?: {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-
-    isConditionalReturningMember?: string;
-
-    // Asked for non-conditional-returning members
-    isCurrentUoaStudent?: string;
-
-    // UoA student fields
-    upi?: string;
-    studentId?: string;
-
-    // Only for current UoA members
-    faculty?: string[];
-    programme?: string;
-    yearLevel?: string;
-
-    // Only for non-UoA students
-    primaryAffiliation?: string[];
-    nonUoaExcerpt?: string;
-    nonUoaPitch?: string;
-
-    // Final questions for everyone
-    linuxSkillLevel?: string;
-    potentialInvolvement?: string;
-    discordUsername?: string;
-  };
+  fields?: Partial<RegistrationDraft>;
 } | null;
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === "production",
   sameSite: "strict" as const,
   path: "/registration",
 };
 
 export async function submitRegistrationStep(
-  prevState: FormState,
+  prevState: RegistrationFormState,
   formData: FormData,
 ) {
   const cookieStore = await cookies();
 
   // Load previously saved data
-  const raw = cookieStore.get("formState")?.value;
-  const prev = raw ? JSON.parse(raw) : {};
+  let prev: Partial<RegistrationDraft> = {};
+  try {
+    const raw = cookieStore.get("formState")?.value;
+    if (raw) prev = JSON.parse(raw);
+  } catch {}
 
-  const page = formData.get("page") as string;
+  const page = formData.get("page") as RegistrationPage;
+  let nextPage: RegistrationPage = "start";
+  let stepData: Partial<RegistrationDraft> = {};
 
-  const { page: _, ...fields } = Object.fromEntries(formData); // strip page field
-  const newData = { ...prev, ...fields }; // merge old and new data
-
-  let nextPage: string = "start";
+  // const { page: _, ...fields } = Object.fromEntries(formData); // strip page field
+  // const newData = { ...prev, ...fields }; // merge old and new data
 
   switch (page) {
-    case "start":
+    case "start": {
       // Get required inputs
       const email = formData.get("email") as string;
       const isConditionalReturningMember = formData.get(
@@ -70,7 +85,6 @@ export async function submitRegistrationStep(
 
       // Check Email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
       if (!email || !emailRegex.test(email)) {
         return {
           error: "Please enter a valid email address (e.g., name@example.com).",
@@ -85,11 +99,12 @@ export async function submitRegistrationStep(
         };
       }
 
+      stepData = { email, isConditionalReturningMember };
       nextPage =
         isConditionalReturningMember === "yes" ? "returningUoa" : "newMember";
       break;
-
-    case "newMember":
+    }
+    case "newMember": {
       const firstName = formData.get("firstName") as string;
       const lastName = formData.get("lastName") as string;
       const isCurrentUoaStudent = formData.get("isCurrentUoaStudent") as string;
@@ -101,13 +116,14 @@ export async function submitRegistrationStep(
         };
       }
 
-      nextPage = isCurrentUoaStudent === "yes" ? "newUoa" : "newOther";
+      stepData = { firstName, lastName, isCurrentUoaStudent };
+      nextPage = isCurrentUoaStudent === "yes" ? "newUoa" : "newNonUoa";
       break;
-
+    }
     case "newUoa": {
       const upi = formData.get("upi") as string;
       const studentId = formData.get("studentId") as string;
-      const faculties = formData.getAll("faculty") as string[];
+      const faculty = formData.getAll("faculty") as string[];
       const programme = formData.get("programme") as string;
       const yearLevel = formData.get("yearLevel") as string;
 
@@ -119,7 +135,7 @@ export async function submitRegistrationStep(
         !upiRegex.test(upi) ||
         !studentId ||
         !studentIdRegex.test(studentId) ||
-        faculties.length == 0 ||
+        faculty.length == 0 ||
         !programme ||
         !yearLevel
       ) {
@@ -129,11 +145,14 @@ export async function submitRegistrationStep(
         };
       }
 
+      stepData = { upi, studentId, faculty, programme, yearLevel };
       nextPage = "final";
       break;
     }
-    case "newOther":
+    case "newNonUoa": {
       const primaryAffiliation = formData.get("primaryAffiliation") as string;
+      const nonUoaExcerpt = formData.get("nonUoaExcerpt") as string;
+      const nonUoaPitch = formData.get("nonUoaPitch") as string;
 
       if (!primaryAffiliation) {
         return {
@@ -142,9 +161,10 @@ export async function submitRegistrationStep(
         };
       }
 
+      stepData = { primaryAffiliation, nonUoaExcerpt, nonUoaPitch };
       nextPage = "final";
       break;
-
+    }
     case "returningUoa": {
       const upi = formData.get("upi") as string;
       const studentId = formData.get("studentId") as string;
@@ -164,11 +184,16 @@ export async function submitRegistrationStep(
         };
       }
 
+      stepData = { upi, studentId };
       nextPage = "final";
       break;
     }
-    case "final":
+    case "final": {
       const linuxSkillLevel = formData.get("linuxSkillLevel") as string;
+      const potentialInvolvement = formData.getAll(
+        "potentialInvolvement",
+      ) as string[];
+      const discordUsername = formData.get("discordUsername") as string;
 
       if (!linuxSkillLevel) {
         return {
@@ -177,23 +202,38 @@ export async function submitRegistrationStep(
         };
       }
 
+      // Strip page from final draft
+      const { page, ...draftFields } = prev;
+
+      // Merge final step data with full draft
+      const fullDraft: Partial<RegistrationDraft> = {
+        ...draftFields,
+        linuxSkillLevel,
+        potentialInvolvement,
+        discordUsername,
+      };
+
       // Final submission logic
-      console.log("Finalizing registration for:", newData.email);
+      console.log("Finalizing registration for:", fullDraft);
+
       cookieStore.delete({ name: "formState", path: "/registration" });
       redirect("/success");
       break;
-
+    }
     default:
       nextPage = "start";
       break;
   }
 
+  // merge
+  const newDraft: Partial<RegistrationDraft> = {
+    ...prev,
+    ...stepData,
+    page: nextPage,
+  };
+
   // Save data to cookie
-  cookieStore.set(
-    "formState",
-    JSON.stringify({ ...newData, page: nextPage }),
-    COOKIE_OPTIONS,
-  );
+  cookieStore.set("formState", JSON.stringify(newDraft), COOKIE_OPTIONS);
 
   // Redirect to the next step
   redirect("/registration");

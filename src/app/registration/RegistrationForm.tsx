@@ -1,8 +1,8 @@
 "use client";
 import { createContext, useContext, useActionState } from "react";
-import { submitRegistrationStep, FormState } from "./actions";
+import { submitRegistrationStep, RegistrationFormState } from "./actions";
 
-const FormStateContext = createContext<FormState>(null);
+const FormStateContext = createContext<RegistrationFormState>(null);
 
 export function RegistrationForm({
   currentPage,
