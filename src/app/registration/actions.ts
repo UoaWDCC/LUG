@@ -13,6 +13,7 @@ type RegistrationPage =
 
 type RegistrationDraft = {
   page: RegistrationPage;
+  pageStack: RegistrationPage[];
 
   // Start page
   email?: string;
@@ -68,13 +69,22 @@ export async function submitRegistrationStep(
     if (raw) prev = JSON.parse(raw);
   } catch {}
 
+  // Handle back navigation if required
+  const intent = formData.get("intent") as string;
+  if (intent == "back" && prev.pageStack) {
+    const stack = prev.pageStack ?? [];
+    const goTo = stack.at(-1) ?? "start";
+    const newDraft = { ...prev, page: goTo, pageStack: stack.slice(0, -1) };
+
+    cookieStore.set("formState", JSON.stringify(newDraft), COOKIE_OPTIONS);
+    redirect("/registration");
+  }
+
   const page = formData.get("page") as RegistrationPage;
   let nextPage: RegistrationPage = "start";
   let stepData: Partial<RegistrationDraft> = {};
 
-  // const { page: _, ...fields } = Object.fromEntries(formData); // strip page field
-  // const newData = { ...prev, ...fields }; // merge old and new data
-
+  // Validate data based on page
   switch (page) {
     case "start": {
       // Get required inputs
@@ -229,6 +239,7 @@ export async function submitRegistrationStep(
   const newDraft: Partial<RegistrationDraft> = {
     ...prev,
     ...stepData,
+    pageStack: [...(prev.pageStack ?? []), page],
     page: nextPage,
   };
 

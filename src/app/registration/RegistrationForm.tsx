@@ -28,6 +28,17 @@ export function RegistrationForm({
         {children}
         <button
           type="submit"
+          name="intent"
+          value="back"
+          className="self-start px-6 py-2 bg-green-600 text-white rounded"
+        >
+          Prev
+        </button>
+
+        <button
+          type="submit"
+          name="intent"
+          value="submit"
           className="self-start px-6 py-2 bg-green-600 text-white rounded"
         >
           Submit
