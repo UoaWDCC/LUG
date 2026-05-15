@@ -5,10 +5,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
-    globals: true,
+    globals: false,
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}"],
     exclude: ["node_modules", ".next", "dist", "coverage"],
     clearMocks: true,
     restoreMocks: true,
