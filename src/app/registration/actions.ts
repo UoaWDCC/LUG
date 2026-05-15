@@ -1,53 +1,12 @@
 "use server";
 
+import {
+  RegistrationPage,
+  RegistrationDraft,
+  RegistrationFormState,
+} from "./types";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-
-type RegistrationPage =
-  | "start"
-  | "returningUoa"
-  | "newMember"
-  | "newUoa"
-  | "newNonUoa"
-  | "final";
-
-type RegistrationDraft = {
-  page: RegistrationPage;
-  pageStack: RegistrationPage[];
-
-  // Start page
-  email?: string;
-  isConditionalReturningMember?: string;
-
-  // New member page
-  firstName?: string;
-  lastName?: string;
-  isCurrentUoaStudent?: string;
-
-  // Returning/current UoA fields
-  upi?: string;
-  studentId?: string;
-
-  // Current UoA only
-  faculty?: string[];
-  programme?: string;
-  yearLevel?: string;
-
-  // Non-UoA only
-  primaryAffiliation?: string;
-  nonUoaExcerpt?: string;
-  nonUoaPitch?: string;
-
-  // Final page
-  linuxSkillLevel?: string;
-  potentialInvolvement?: string[];
-  discordUsername?: string;
-};
-
-export type RegistrationFormState = {
-  error?: string;
-  fields?: Partial<RegistrationDraft>;
-} | null;
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -87,13 +46,11 @@ export async function submitRegistrationStep(
   // Validate data based on page
   switch (page) {
     case "start": {
-      // Get required inputs
       const email = formData.get("email") as string;
       const isConditionalReturningMember = formData.get(
         "isConditionalReturningMember",
       ) as string;
 
-      // Check Email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
         return {
@@ -105,7 +62,7 @@ export async function submitRegistrationStep(
       if (!isConditionalReturningMember) {
         return {
           error: "Please select whether you have registered previously.",
-          fields: { email }, // Keep the email so they don't have to re-type it
+          fields: { email },
         };
       }
 
@@ -176,25 +133,27 @@ export async function submitRegistrationStep(
       break;
     }
     case "returningUoa": {
-      const upi = formData.get("upi") as string;
-      const studentId = formData.get("studentId") as string;
-
       const upiRegex = /^[a-z]{3,4}\d{3}$/i;
       const studentIdRegex = /^\d{9,10}$/;
 
-      if (
-        !upi ||
-        !upiRegex.test(upi) ||
-        !studentId ||
-        !studentIdRegex.test(studentId)
-      ) {
-        return {
-          error: "Please select an option.",
-          fields: {},
-        };
+      const upi = formData.get("upi") as string;
+      const studentId = formData.get("studentId") as string;
+      const fields = { upi, studentId };
+
+      if (!upi) {
+        return { error: "UPI is required.", fields };
+      }
+      if (!upiRegex.test(upi)) {
+        return { error: "Invalid UPI format (e.g., abcd123).", fields };
+      }
+      if (!studentId) {
+        return { error: "Student ID is required.", fields };
+      }
+      if (!studentIdRegex.test(studentId)) {
+        return { error: "Student ID must be 9-10 digits.", fields };
       }
 
-      stepData = { upi, studentId };
+      stepData = fields;
       nextPage = "final";
       break;
     }

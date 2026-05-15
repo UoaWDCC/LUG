@@ -1,4 +1,10 @@
+"use client";
+
+import { useFormError } from "../RegistrationForm";
+
 export function ReturningUoaPage() {
+  const state = useFormError();
+
   return (
     <>
       <h2>Returning UoA Students</h2>
@@ -15,9 +21,13 @@ export function ReturningUoaPage() {
           id="upi"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.upi || ""}
           pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
+        {state?.error?.includes("UPI") && (
+          <p className="text-red-600 text-sm italic mt-1">{state.error}</p>
+        )}
       </div>
 
       <div>
@@ -28,9 +38,13 @@ export function ReturningUoaPage() {
           id="studentId"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.studentId || ""}
           pattern="[0-9]{9,10}"
           required
         />
+        {state?.error?.includes("Student") && (
+          <p className="text-red-600 text-sm italic mt-1">{state.error}</p>
+        )}
       </div>
     </>
   );

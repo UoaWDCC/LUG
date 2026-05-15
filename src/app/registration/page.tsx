@@ -16,7 +16,7 @@ export default async function FormPage() {
   return (
     <section className="max-w-2xln border-2 border-green-500">
       <h1>LUG@UoA Member Registration Form 2026</h1>
-      <p>{`Thank you for registering your interest to become a member of the
+      <p className="mb-6">{`Thank you for registering your interest to become a member of the
           University of Auckland Linux User Group (also known as LUG@UoA)! It's
           great to have you with us. The details collected in this form will be
           used for record-keeping purposes as mandated by Student Groups and to

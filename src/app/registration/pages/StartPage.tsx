@@ -13,6 +13,7 @@ export function StartPage() {
           name="email"
           id="email"
           type="email"
+          placeholder="name@example.com"
           defaultValue={state?.fields?.email || ""} // This is what prevents the clearing
           className={`border p-2 w-full ${state?.error?.includes("email") ? "border-red-500" : "border-gray-300"}`}
         />

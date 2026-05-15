@@ -1,4 +1,10 @@
+"use client";
+
+import { useFormError } from "../RegistrationForm";
+
 export function NewUoaPage() {
+  const state = useFormError();
+
   return (
     <>
       <h2>Your student details with The University of Auckland</h2>
@@ -16,6 +22,7 @@ export function NewUoaPage() {
           id="upi"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.upi || ""}
           pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
@@ -29,6 +36,7 @@ export function NewUoaPage() {
           id="studentId"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.studentId || ""}
           pattern="[0-9]{9,10}"
           required
         />
@@ -40,27 +48,54 @@ export function NewUoaPage() {
 
         <div>
           <label>
-            <input type="checkbox" name="faculty" value="engineeringDesign" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="engineeringDesign"
+              defaultChecked={state?.fields?.faculty?.includes(
+                "engineeringDesign",
+              )}
+            />
             Faculty of Engineering & Design
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="science" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="science"
+              defaultChecked={state?.fields?.faculty?.includes("science")}
+            />
             Faculty of Science
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="artsEducation" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="artsEducation"
+              defaultChecked={state?.fields?.faculty?.includes("artsEducation")}
+            />
             Faculty of Arts & Education
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="business" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="business"
+              defaultChecked={state?.fields?.faculty?.includes("business")}
+            />
             Business School
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="law" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="law"
+              defaultChecked={state?.fields?.faculty?.includes("law")}
+            />
             Auckland Law School
           </label>
 
@@ -69,22 +104,42 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="medicalHealthScience"
+              defaultChecked={state?.fields?.faculty?.includes(
+                "medicalHealthScience",
+              )}
             />
             Faculty of Medical and Health Sciences
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="liggins" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="liggins"
+              defaultChecked={state?.fields?.faculty?.includes("liggins")}
+            />
             Liggins Institute
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="bioengineering" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="bioengineering"
+              defaultChecked={state?.fields?.faculty?.includes(
+                "bioengineering",
+              )}
+            />
             Auckland Bioengineering Institute
           </label>
 
           <label>
-            <input type="checkbox" name="faculty" value="other" />
+            <input
+              type="checkbox"
+              name="faculty"
+              value="other"
+              defaultChecked={state?.fields?.faculty?.includes("other")}
+            />
             Other
           </label>
 
@@ -96,6 +151,7 @@ export function NewUoaPage() {
             name="otherFaculty"
             id="otherFaculty"
             placeholder="Specify other"
+            defaultValue={state?.fields?.otherFaculty || ""}
           />
         </div>
       </fieldset>
@@ -113,6 +169,7 @@ export function NewUoaPage() {
           id="programme"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.programme || ""}
           required
         />
       </div>
@@ -126,32 +183,63 @@ export function NewUoaPage() {
         </p>
         <div>
           <label>
-            <input type="radio" name="yearLevel" value="year1" required />
+            <input
+              type="radio"
+              name="yearLevel"
+              value="year1"
+              defaultChecked={state?.fields?.yearLevel === "year1"}
+              required
+            />
             1st Year
           </label>
 
           <label>
-            <input type="radio" name="yearLevel" value="year2" />
+            <input
+              type="radio"
+              name="yearLevel"
+              value="year2"
+              defaultChecked={state?.fields?.yearLevel === "year2"}
+            />
             2nd Year
           </label>
 
           <label>
-            <input type="radio" name="yearLevel" value="year3" />
+            <input
+              type="radio"
+              name="yearLevel"
+              value="year3"
+              defaultChecked={state?.fields?.yearLevel === "year3"}
+            />
             3rd Year
           </label>
 
           <label>
-            <input type="radio" name="yearLevel" value="year4" />
+            <input
+              type="radio"
+              name="yearLevel"
+              value="year4"
+              defaultChecked={state?.fields?.yearLevel === "year4"}
+            />
             4th Year
           </label>
 
           <label>
-            <input type="radio" name="yearLevel" value="year5Above" />
-            5h Year or later
+            <input
+              type="radio"
+              name="yearLevel"
+              value="year5Above"
+              defaultChecked={state?.fields?.yearLevel === "year5Above"}
+            />
+            5th Year or later
           </label>
 
           <label>
-            <input type="radio" name="yearLevel" value="yearGraduated" />
+            <input
+              type="radio"
+              name="yearLevel"
+              value="yearGraduated"
+              defaultChecked={state?.fields?.yearLevel === "yearGraduated"}
+            />
             Graduated within 2 years
           </label>
         </div>
