@@ -26,19 +26,9 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "test:unit": "vitest run --project unit",
-    "test:unit:watch": "vitest --project unit",
-    "test:unit:coverage": "vitest run --coverage --project unit",
-    "test:int": "vitest run --project int",
-    "test:int:watch": "vitest --project int",
-    "test:int:coverage": "vitest run --coverage --project int",
-    "test:vitest": "vitest run --project unit --project int",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:headed": "playwright test --headed",
-    "test:e2e:debug": "playwright test --debug",
-    "test:e2e:report": "playwright show-report",
-    "test": "pnpm test:unit && pnpm test:int && pnpm test:e2e"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
