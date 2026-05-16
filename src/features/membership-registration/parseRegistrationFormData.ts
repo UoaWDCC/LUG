@@ -31,6 +31,15 @@ function getTextField(formData: FormData, fieldName: string): string | null {
   return trimmedValue === "" ? null : trimmedValue;
 }
 
+function getLowercaseTextField(
+  formData: FormData,
+  fieldName: string,
+): string | null {
+  const value = getTextField(formData, fieldName);
+
+  return value === null ? null : value.toLowerCase();
+}
+
 function getCheckboxGroup(formData: FormData, fieldName: string): string[] {
   return formData
     .getAll(fieldName)
@@ -45,7 +54,7 @@ export function parseRegistrationFormData(
   return {
     firstName: getTextField(formData, "firstName"),
     lastName: getTextField(formData, "lastName"),
-    email: getTextField(formData, "email"),
+    email: getLowercaseTextField(formData, "email"),
 
     isConditionalReturningMember: getTextField(
       formData,
