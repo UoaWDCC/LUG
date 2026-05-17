@@ -15,6 +15,47 @@ const COOKIE_OPTIONS = {
   path: "/registration",
 };
 
+function stripIrrelevantFields(
+  draft: Partial<RegistrationDraft>,
+): Partial<RegistrationDraft> {
+  const stack = draft.pageStack ?? [];
+  const lastPage = stack.at(-1) ?? "start";
+
+  const { page, pageStack, ...draftFields } = draft;
+
+  if (lastPage == "returningUoa") {
+    const {
+      firstName,
+      lastName,
+      isCurrentUoaStudent,
+      faculty,
+      otherFaculty,
+      programme,
+      yearLevel,
+      primaryAffiliation,
+      nonUoaExcerpt,
+      nonUoaPitch,
+      ...stripped
+    } = draftFields;
+    return stripped;
+  } else if (lastPage == "newUoa") {
+    const { primaryAffiliation, nonUoaExcerpt, nonUoaPitch, ...stripped } =
+      draftFields;
+    return stripped;
+  } else {
+    const {
+      upi,
+      studentId,
+      faculty,
+      otherFaculty,
+      programme,
+      yearLevel,
+      ...stripped
+    } = draftFields;
+    return stripped;
+  }
+}
+
 export async function submitRegistrationStep(
   prevState: RegistrationFormState,
   formData: FormData,
@@ -171,12 +212,9 @@ export async function submitRegistrationStep(
         };
       }
 
-      // Strip page from final draft
-      const { page, ...draftFields } = prev;
-
       // Merge final step data with full draft
       const fullDraft: Partial<RegistrationDraft> = {
-        ...draftFields,
+        ...stripIrrelevantFields(prev),
         linuxSkillLevel,
         potentialInvolvement,
         discordUsername,
@@ -194,7 +232,7 @@ export async function submitRegistrationStep(
       break;
   }
 
-  // merge
+  // Merge
   const newDraft: Partial<RegistrationDraft> = {
     ...prev,
     ...stepData,
