@@ -91,6 +91,7 @@ export async function submitRegistrationStep(
       const isConditionalReturningMember = formData.get(
         "isConditionalReturningMember",
       ) as string;
+      const fields = { email, isConditionalReturningMember };
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
@@ -107,7 +108,7 @@ export async function submitRegistrationStep(
         };
       }
 
-      stepData = { email, isConditionalReturningMember };
+      stepData = fields;
       nextPage =
         isConditionalReturningMember === "yes" ? "returningUoa" : "newMember";
       break;
@@ -116,44 +117,68 @@ export async function submitRegistrationStep(
       const firstName = formData.get("firstName") as string;
       const lastName = formData.get("lastName") as string;
       const isCurrentUoaStudent = formData.get("isCurrentUoaStudent") as string;
+      const fields = { firstName, lastName, isCurrentUoaStudent };
 
-      if (!firstName || !lastName || !isCurrentUoaStudent) {
+      if (!firstName) {
+        return { error: "First name is required.", fields };
+      }
+
+      if (!lastName) {
+        return { error: "Last name is required.", fields };
+      }
+
+      if (!isCurrentUoaStudent) {
         return {
-          error: "Please select an option.",
-          fields: {},
+          error:
+            "Please select whether you attend the University of Auckland (UoA).",
+          fields,
         };
       }
 
-      stepData = { firstName, lastName, isCurrentUoaStudent };
+      stepData = fields;
       nextPage = isCurrentUoaStudent === "yes" ? "newUoa" : "newNonUoa";
       break;
     }
     case "newUoa": {
+      const upiRegex = /^[a-z]{3,4}\d{3}$/i;
+      const studentIdRegex = /^\d{9,10}$/;
+
       const upi = formData.get("upi") as string;
       const studentId = formData.get("studentId") as string;
       const faculty = formData.getAll("faculty") as string[];
       const programme = formData.get("programme") as string;
       const yearLevel = formData.get("yearLevel") as string;
+      const fields = { upi, studentId, faculty, programme, yearLevel };
 
-      const upiRegex = /^[a-z]{3,4}\d{3}$/i;
-      const studentIdRegex = /^\d{9,10}$/;
+      if (!upi) {
+        return { error: "UPI is required.", fields };
+      }
+      if (!upiRegex.test(upi)) {
+        return { error: "Invalid UPI format (e.g., abcd123).", fields };
+      }
+      if (!studentId) {
+        return { error: "Student ID is required.", fields };
+      }
+      if (!studentIdRegex.test(studentId)) {
+        return { error: "Student ID must be 9-10 digits.", fields };
+      }
 
-      if (
-        !upi ||
-        !upiRegex.test(upi) ||
-        !studentId ||
-        !studentIdRegex.test(studentId) ||
-        faculty.length == 0 ||
-        !programme ||
-        !yearLevel
-      ) {
+      if (faculty.length == 0) {
+        return { error: "Please select at least 1 faculty.", fields };
+      }
+
+      if (!programme) {
         return {
-          error: "Please select an option.",
-          fields: {},
+          error: "Please enter your current programme of study.",
+          fields,
         };
       }
 
-      stepData = { upi, studentId, faculty, programme, yearLevel };
+      if (!yearLevel) {
+        return { error: "Please select your current year of study.", fields };
+      }
+
+      stepData = fields;
       nextPage = "final";
       break;
     }
@@ -161,15 +186,13 @@ export async function submitRegistrationStep(
       const primaryAffiliation = formData.get("primaryAffiliation") as string;
       const nonUoaExcerpt = formData.get("nonUoaExcerpt") as string;
       const nonUoaPitch = formData.get("nonUoaPitch") as string;
+      const fields = { primaryAffiliation, nonUoaExcerpt, nonUoaPitch };
 
       if (!primaryAffiliation) {
-        return {
-          error: "Please select an option.",
-          fields: {},
-        };
+        return { error: "Primary Affiliation is required.", fields };
       }
 
-      stepData = { primaryAffiliation, nonUoaExcerpt, nonUoaPitch };
+      stepData = fields;
       nextPage = "final";
       break;
     }
@@ -204,12 +227,10 @@ export async function submitRegistrationStep(
         "potentialInvolvement",
       ) as string[];
       const discordUsername = formData.get("discordUsername") as string;
+      const fields = { linuxSkillLevel, potentialInvolvement, discordUsername };
 
       if (!linuxSkillLevel) {
-        return {
-          error: "Please select an option.",
-          fields: {},
-        };
+        return { error: "Linux knowledge is required.", fields };
       }
 
       // Merge final step data with full draft

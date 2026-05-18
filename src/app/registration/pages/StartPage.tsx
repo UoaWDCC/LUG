@@ -56,6 +56,9 @@ export function StartPage() {
               type="radio"
               name="isConditionalReturningMember"
               value="yes"
+              defaultChecked={
+                state?.fields?.isConditionalReturningMember === "yes"
+              }
               required
             />
             Yes
@@ -66,6 +69,10 @@ export function StartPage() {
               type="radio"
               name="isConditionalReturningMember"
               value="no"
+              defaultChecked={
+                state?.fields?.isConditionalReturningMember === "no"
+              }
+              required
             />
             No
           </label>

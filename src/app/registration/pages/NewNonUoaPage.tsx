@@ -1,4 +1,10 @@
+"use client";
+
+import { useFormError } from "../RegistrationForm";
+
 export function NewNonUoaPage() {
+  const state = useFormError();
+
   return (
     <>
       <h2>Your affiliation</h2>
@@ -16,6 +22,7 @@ export function NewNonUoaPage() {
           id="primaryAffiliation"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.primaryAffiliation || ""}
           required
         />
       </div>
@@ -30,6 +37,7 @@ export function NewNonUoaPage() {
           name="nonUoaExcerpt"
           id="nonUoaExcerpt"
           placeholder="Your answer"
+          defaultValue={state?.fields?.nonUoaExcerpt || ""}
         />
       </div>
 
@@ -40,6 +48,7 @@ export function NewNonUoaPage() {
           name="nonUoaPitch"
           id="nonUoaPitch"
           placeholder="Your answer"
+          defaultValue={state?.fields?.nonUoaPitch || ""}
         />
       </div>
     </>

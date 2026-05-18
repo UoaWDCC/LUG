@@ -1,4 +1,10 @@
+"use client";
+
+import { useFormError } from "../RegistrationForm";
+
 export function FinalPage() {
+  const state = useFormError();
+
   return (
     <>
       <h2>The Final Section</h2>
@@ -23,6 +29,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="NOTHING"
+              defaultChecked={state?.fields?.linuxSkillLevel === "NOTHING"}
               required
             />
             Nothing
@@ -32,24 +39,54 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="AWARE_OF_EXISTENCE"
+              defaultChecked={
+                state?.fields?.linuxSkillLevel === "AWARE_OF_EXISTENCE"
+              }
+              required
             />
             I am aware of its existence
           </label>
           <label>
-            <input type="radio" name="linuxSkillLevel" value="BEGINNER_USER" />I
-            consider myself a beginner user
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="BEGINNER_USER"
+              defaultChecked={
+                state?.fields?.linuxSkillLevel === "BEGINNER_USER"
+              }
+              required
+            />
+            I consider myself a beginner user
           </label>
           <label>
-            <input type="radio" name="linuxSkillLevel" value="REGULAR_USER" />I
-            consider myself a regular user
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="REGULAR_USER"
+              defaultChecked={state?.fields?.linuxSkillLevel === "REGULAR_USER"}
+              required
+            />
+            I consider myself a regular user
           </label>
           <label>
-            <input type="radio" name="linuxSkillLevel" value="POWER_USER" />I
-            consider myself a power user
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="POWER_USER"
+              defaultChecked={state?.fields?.linuxSkillLevel === "POWER_USER"}
+              required
+            />
+            I consider myself a power user
           </label>
           <label>
-            <input type="radio" name="linuxSkillLevel" value="CONTRIBUTOR" />I
-            maintain or contribute to software for GNU/Linux
+            <input
+              type="radio"
+              name="linuxSkillLevel"
+              value="CONTRIBUTOR"
+              defaultChecked={state?.fields?.linuxSkillLevel === "CONTRIBUTOR"}
+              required
+            />
+            I maintain or contribute to software for GNU/Linux
           </label>
         </div>
       </fieldset>
@@ -67,6 +104,9 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="ATTENDING"
+              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+                "ATTENDING",
+              )}
             />
             Attending events
           </label>
@@ -75,6 +115,9 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="SPEAKING"
+              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+                "SPEAKING",
+              )}
             />
             Speaking at events
           </label>
@@ -83,6 +126,9 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="EXECUTIVE"
+              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+                "EXECUTIVE",
+              )}
             />
             Being an executive
           </label>
@@ -91,6 +137,9 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="PROJECTS"
+              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+                "PROJECTS",
+              )}
             />
             Participating in a software development project
           </label>
@@ -110,6 +159,7 @@ export function FinalPage() {
           id="discordUsername"
           type="text"
           placeholder="Your answer"
+          defaultValue={state?.fields?.discordUsername || ""}
         />
       </div>
     </>
