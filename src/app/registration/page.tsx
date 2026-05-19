@@ -11,7 +11,8 @@ import { RegistrationForm } from "./RegistrationForm";
 export default async function FormPage() {
   const cookieStore = await cookies();
   const raw = cookieStore.get("formState")?.value;
-  const { page = "start" } = raw ? JSON.parse(raw) : {};
+  const draft = raw ? JSON.parse(raw) : {};
+  const { page = "start" } = draft;
 
   return (
     <section className="max-w-2xln border-2 border-green-500">
@@ -26,12 +27,12 @@ export default async function FormPage() {
           contacting lug.aucklanduni@gmail.com.`}</p>
 
       <RegistrationForm currentPage={page}>
-        {page === "start" && <StartPage />}
-        {page === "returningUoa" && <ReturningUoaPage />}
-        {page === "newMember" && <NewMemberPage />}
-        {page === "newUoa" && <NewUoaPage />}
-        {page === "newNonUoa" && <NewNonUoaPage />}
-        {page === "final" && <FinalPage />}
+        {page === "start" && <StartPage fields={draft} />}
+        {page === "returningUoa" && <ReturningUoaPage fields={draft} />}
+        {page === "newMember" && <NewMemberPage fields={draft} />}
+        {page === "newUoa" && <NewUoaPage fields={draft} />}
+        {page === "newNonUoa" && <NewNonUoaPage fields={draft} />}
+        {page === "final" && <FinalPage fields={draft} />}
       </RegistrationForm>
     </section>
   );

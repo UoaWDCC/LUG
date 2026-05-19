@@ -1,9 +1,12 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function NewUoaPage() {
+export function NewUoaPage({ fields }: { fields: Partial<RegistrationDraft> }) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -22,7 +25,7 @@ export function NewUoaPage() {
           id="upi"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.upi || ""}
+          defaultValue={field?.upi ?? ""}
           pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
@@ -36,7 +39,7 @@ export function NewUoaPage() {
           id="studentId"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.studentId || ""}
+          defaultValue={field?.studentId ?? ""}
           pattern="[0-9]{9,10}"
           required
         />
@@ -52,9 +55,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="engineeringDesign"
-              defaultChecked={state?.fields?.faculty?.includes(
-                "engineeringDesign",
-              )}
+              defaultChecked={field?.faculty?.includes("engineeringDesign")}
             />
             Faculty of Engineering & Design
           </label>
@@ -64,7 +65,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="science"
-              defaultChecked={state?.fields?.faculty?.includes("science")}
+              defaultChecked={field?.faculty?.includes("science")}
             />
             Faculty of Science
           </label>
@@ -74,7 +75,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="artsEducation"
-              defaultChecked={state?.fields?.faculty?.includes("artsEducation")}
+              defaultChecked={field?.faculty?.includes("artsEducation")}
             />
             Faculty of Arts & Education
           </label>
@@ -84,7 +85,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="business"
-              defaultChecked={state?.fields?.faculty?.includes("business")}
+              defaultChecked={field?.faculty?.includes("business")}
             />
             Business School
           </label>
@@ -94,7 +95,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="law"
-              defaultChecked={state?.fields?.faculty?.includes("law")}
+              defaultChecked={field?.faculty?.includes("law")}
             />
             Auckland Law School
           </label>
@@ -104,9 +105,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="medicalHealthScience"
-              defaultChecked={state?.fields?.faculty?.includes(
-                "medicalHealthScience",
-              )}
+              defaultChecked={field?.faculty?.includes("medicalHealthScience")}
             />
             Faculty of Medical and Health Sciences
           </label>
@@ -116,7 +115,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="liggins"
-              defaultChecked={state?.fields?.faculty?.includes("liggins")}
+              defaultChecked={field?.faculty?.includes("liggins")}
             />
             Liggins Institute
           </label>
@@ -126,9 +125,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="bioengineering"
-              defaultChecked={state?.fields?.faculty?.includes(
-                "bioengineering",
-              )}
+              defaultChecked={field?.faculty?.includes("bioengineering")}
             />
             Auckland Bioengineering Institute
           </label>
@@ -138,7 +135,7 @@ export function NewUoaPage() {
               type="checkbox"
               name="faculty"
               value="other"
-              defaultChecked={state?.fields?.faculty?.includes("other")}
+              defaultChecked={field?.faculty?.includes("other")}
             />
             Other
           </label>
@@ -151,7 +148,7 @@ export function NewUoaPage() {
             name="otherFaculty"
             id="otherFaculty"
             placeholder="Specify other"
-            defaultValue={state?.fields?.otherFaculty || ""}
+            defaultValue={field?.otherFaculty || ""}
           />
         </div>
       </fieldset>
@@ -169,7 +166,7 @@ export function NewUoaPage() {
           id="programme"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.programme || ""}
+          defaultValue={field?.programme ?? ""}
           required
         />
       </div>
@@ -187,7 +184,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="year1"
-              defaultChecked={state?.fields?.yearLevel === "year1"}
+              defaultChecked={field?.yearLevel === "year1"}
               required
             />
             1st Year
@@ -198,7 +195,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="year2"
-              defaultChecked={state?.fields?.yearLevel === "year2"}
+              defaultChecked={field?.yearLevel === "year2"}
             />
             2nd Year
           </label>
@@ -208,7 +205,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="year3"
-              defaultChecked={state?.fields?.yearLevel === "year3"}
+              defaultChecked={field?.yearLevel === "year3"}
             />
             3rd Year
           </label>
@@ -218,7 +215,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="year4"
-              defaultChecked={state?.fields?.yearLevel === "year4"}
+              defaultChecked={field?.yearLevel === "year4"}
             />
             4th Year
           </label>
@@ -228,7 +225,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="year5Above"
-              defaultChecked={state?.fields?.yearLevel === "year5Above"}
+              defaultChecked={field?.yearLevel === "year5Above"}
             />
             5th Year or later
           </label>
@@ -238,7 +235,7 @@ export function NewUoaPage() {
               type="radio"
               name="yearLevel"
               value="yearGraduated"
-              defaultChecked={state?.fields?.yearLevel === "yearGraduated"}
+              defaultChecked={field?.yearLevel === "yearGraduated"}
             />
             Graduated within 2 years
           </label>

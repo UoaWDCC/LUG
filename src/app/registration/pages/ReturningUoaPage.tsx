@@ -1,9 +1,16 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function ReturningUoaPage() {
+export function ReturningUoaPage({
+  fields,
+}: {
+  fields: Partial<RegistrationDraft>;
+}) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -21,11 +28,11 @@ export function ReturningUoaPage() {
           id="upi"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.upi || ""}
+          defaultValue={field?.upi ?? ""}
           pattern="[a-z]{3,4}[0-9]{3}"
           required
         />
-        {state?.error?.includes("UPI") && (
+        {state?.error?.includes("upi") && (
           <p className="text-red-600 text-sm italic mt-1">{state.error}</p>
         )}
       </div>
@@ -38,7 +45,7 @@ export function ReturningUoaPage() {
           id="studentId"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.studentId || ""}
+          defaultValue={field?.studentId ?? ""}
           pattern="[0-9]{9,10}"
           required
         />

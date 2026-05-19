@@ -1,9 +1,16 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function NewNonUoaPage() {
+export function NewNonUoaPage({
+  fields,
+}: {
+  fields: Partial<RegistrationDraft>;
+}) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -22,7 +29,7 @@ export function NewNonUoaPage() {
           id="primaryAffiliation"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.primaryAffiliation || ""}
+          defaultValue={field?.primaryAffiliation ?? ""}
           required
         />
       </div>
@@ -37,7 +44,7 @@ export function NewNonUoaPage() {
           name="nonUoaExcerpt"
           id="nonUoaExcerpt"
           placeholder="Your answer"
-          defaultValue={state?.fields?.nonUoaExcerpt || ""}
+          defaultValue={field?.nonUoaExcerpt ?? ""}
         />
       </div>
 
@@ -48,7 +55,7 @@ export function NewNonUoaPage() {
           name="nonUoaPitch"
           id="nonUoaPitch"
           placeholder="Your answer"
-          defaultValue={state?.fields?.nonUoaPitch || ""}
+          defaultValue={field?.nonUoaPitch ?? ""}
         />
       </div>
     </>

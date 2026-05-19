@@ -1,9 +1,12 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function FinalPage() {
+export function FinalPage({ fields }: { fields: Partial<RegistrationDraft> }) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -29,7 +32,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="NOTHING"
-              defaultChecked={state?.fields?.linuxSkillLevel === "NOTHING"}
+              defaultChecked={field?.linuxSkillLevel === "NOTHING"}
               required
             />
             Nothing
@@ -39,9 +42,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="AWARE_OF_EXISTENCE"
-              defaultChecked={
-                state?.fields?.linuxSkillLevel === "AWARE_OF_EXISTENCE"
-              }
+              defaultChecked={field?.linuxSkillLevel === "AWARE_OF_EXISTENCE"}
               required
             />
             I am aware of its existence
@@ -51,9 +52,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="BEGINNER_USER"
-              defaultChecked={
-                state?.fields?.linuxSkillLevel === "BEGINNER_USER"
-              }
+              defaultChecked={field?.linuxSkillLevel === "BEGINNER_USER"}
               required
             />
             I consider myself a beginner user
@@ -63,7 +62,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="REGULAR_USER"
-              defaultChecked={state?.fields?.linuxSkillLevel === "REGULAR_USER"}
+              defaultChecked={field?.linuxSkillLevel === "REGULAR_USER"}
               required
             />
             I consider myself a regular user
@@ -73,7 +72,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="POWER_USER"
-              defaultChecked={state?.fields?.linuxSkillLevel === "POWER_USER"}
+              defaultChecked={field?.linuxSkillLevel === "POWER_USER"}
               required
             />
             I consider myself a power user
@@ -83,7 +82,7 @@ export function FinalPage() {
               type="radio"
               name="linuxSkillLevel"
               value="CONTRIBUTOR"
-              defaultChecked={state?.fields?.linuxSkillLevel === "CONTRIBUTOR"}
+              defaultChecked={field?.linuxSkillLevel === "CONTRIBUTOR"}
               required
             />
             I maintain or contribute to software for GNU/Linux
@@ -104,7 +103,7 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="ATTENDING"
-              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+              defaultChecked={field?.potentialInvolvement?.includes(
                 "ATTENDING",
               )}
             />
@@ -115,9 +114,7 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="SPEAKING"
-              defaultChecked={state?.fields?.potentialInvolvement?.includes(
-                "SPEAKING",
-              )}
+              defaultChecked={field?.potentialInvolvement?.includes("SPEAKING")}
             />
             Speaking at events
           </label>
@@ -126,7 +123,7 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="EXECUTIVE"
-              defaultChecked={state?.fields?.potentialInvolvement?.includes(
+              defaultChecked={field?.potentialInvolvement?.includes(
                 "EXECUTIVE",
               )}
             />
@@ -137,9 +134,7 @@ export function FinalPage() {
               type="checkbox"
               name="potentialInvolvement"
               value="PROJECTS"
-              defaultChecked={state?.fields?.potentialInvolvement?.includes(
-                "PROJECTS",
-              )}
+              defaultChecked={field?.potentialInvolvement?.includes("PROJECTS")}
             />
             Participating in a software development project
           </label>
@@ -159,7 +154,7 @@ export function FinalPage() {
           id="discordUsername"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.discordUsername || ""}
+          defaultValue={field?.discordUsername || ""}
         />
       </div>
     </>

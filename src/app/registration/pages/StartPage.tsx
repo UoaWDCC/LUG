@@ -1,9 +1,12 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function StartPage() {
+export function StartPage({ fields }: { fields: Partial<RegistrationDraft> }) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -14,7 +17,7 @@ export function StartPage() {
           id="email"
           type="email"
           placeholder="name@example.com"
-          defaultValue={state?.fields?.email || ""} // This is what prevents the clearing
+          defaultValue={field?.email || ""} // This is what prevents the clearing
           className={`border p-2 w-full ${state?.error?.includes("email") ? "border-red-500" : "border-gray-300"}`}
         />
         {state?.error?.includes("email") && (
@@ -56,9 +59,7 @@ export function StartPage() {
               type="radio"
               name="isConditionalReturningMember"
               value="yes"
-              defaultChecked={
-                state?.fields?.isConditionalReturningMember === "yes"
-              }
+              defaultChecked={field?.isConditionalReturningMember === "yes"}
               required
             />
             Yes
@@ -69,9 +70,7 @@ export function StartPage() {
               type="radio"
               name="isConditionalReturningMember"
               value="no"
-              defaultChecked={
-                state?.fields?.isConditionalReturningMember === "no"
-              }
+              defaultChecked={field?.isConditionalReturningMember === "no"}
               required
             />
             No

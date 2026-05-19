@@ -1,9 +1,16 @@
 "use client";
 
 import { useFormError } from "../RegistrationForm";
+import { RegistrationDraft } from "../types";
 
-export function NewMemberPage() {
+export function NewMemberPage({
+  fields,
+}: {
+  fields: Partial<RegistrationDraft>;
+}) {
   const state = useFormError();
+  const errorFields = state?.fields;
+  const field = errorFields ?? fields;
 
   return (
     <>
@@ -16,7 +23,7 @@ export function NewMemberPage() {
           id="firstName"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.firstName || ""}
+          defaultValue={field?.firstName ?? ""}
           required
         />
       </div>
@@ -29,7 +36,7 @@ export function NewMemberPage() {
           id="lastName"
           type="text"
           placeholder="Your answer"
-          defaultValue={state?.fields?.lastName || ""}
+          defaultValue={field?.lastName ?? ""}
           required
         />
       </div>
@@ -42,7 +49,7 @@ export function NewMemberPage() {
               type="radio"
               name="isCurrentUoaStudent"
               value="yes"
-              defaultChecked={state?.fields?.isCurrentUoaStudent === "yes"}
+              defaultChecked={field?.isCurrentUoaStudent === "yes"}
               required
             />
             Yes
@@ -53,7 +60,7 @@ export function NewMemberPage() {
               type="radio"
               name="isCurrentUoaStudent"
               value="no"
-              defaultChecked={state?.fields?.isCurrentUoaStudent === "no"}
+              defaultChecked={field?.isCurrentUoaStudent === "no"}
               required
             />
             No
