@@ -62,9 +62,8 @@ export function parseRegistrationFormData(
     ),
     isCurrentUoaStudent: getTextField(formData, "isCurrentUoaStudent"),
 
-    upi: getTextField(formData, "upi"),
+    upi: getLowercaseTextField(formData, "upi"),
     studentId: getTextField(formData, "studentId"),
-
     faculty: getCheckboxGroup(formData, "faculty"),
     programme: getTextField(formData, "programme"),
     yearLevel: getTextField(formData, "yearLevel"),
