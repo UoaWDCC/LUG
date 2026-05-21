@@ -7,15 +7,16 @@ import { NewUoaPage } from "./pages/NewUoaPage";
 import { NewNonUoaPage } from "./pages/NewNonUoaPage";
 import { FinalPage } from "./pages/FinalPage";
 import { RegistrationForm } from "./RegistrationForm";
+import { readRegistrationDraft } from "./utils";
 
 export default async function FormPage() {
   const cookieStore = await cookies();
   const raw = cookieStore.get("formState")?.value;
-  const draft = raw ? JSON.parse(raw) : {};
+  const draft = readRegistrationDraft(raw);
   const { page = "start" } = draft;
 
   return (
-    <section className="max-w-2xln border-2 border-green-500">
+    <section className="max-w-2x1 border-2 border-green-500">
       <h1>LUG@UoA Member Registration Form 2026</h1>
       <p className="mb-6">{`Thank you for registering your interest to become a member of the
           University of Auckland Linux User Group (also known as LUG@UoA)! It's

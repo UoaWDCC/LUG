@@ -7,6 +7,7 @@ import {
 } from "./types";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { readRegistrationDraft } from "./utils";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -39,8 +40,13 @@ function stripIrrelevantFields(
     } = draftFields;
     return stripped;
   } else if (lastPage == "newUoa") {
-    const { primaryAffiliation, nonUoaExcerpt, nonUoaPitch, ...stripped } =
-      draftFields;
+    const {
+      primaryAffiliation,
+      nonUoaExcerpt,
+      nonUoaPitch,
+      otherFaculty,
+      ...stripped
+    } = draftFields;
     return stripped;
   } else {
     const {
@@ -63,11 +69,8 @@ export async function submitRegistrationStep(
   const cookieStore = await cookies();
 
   // Load previously saved data
-  let prev: Partial<RegistrationDraft> = {};
-  try {
-    const raw = cookieStore.get("formState")?.value;
-    if (raw) prev = JSON.parse(raw);
-  } catch {}
+  const raw = cookieStore.get("formState")?.value;
+  const prev = readRegistrationDraft(raw);
 
   // Handle back navigation if required
   const intent = formData.get("intent") as string;
@@ -146,9 +149,17 @@ export async function submitRegistrationStep(
       const upi = formData.get("upi") as string;
       const studentId = formData.get("studentId") as string;
       const faculty = formData.getAll("faculty") as string[];
+      const otherFaculty = formData.get("otherFaculty") as string;
       const programme = formData.get("programme") as string;
       const yearLevel = formData.get("yearLevel") as string;
-      const fields = { upi, studentId, faculty, programme, yearLevel };
+      const fields = {
+        upi,
+        studentId,
+        faculty,
+        otherFaculty,
+        programme,
+        yearLevel,
+      };
 
       if (!upi) {
         return { error: "UPI is required.", fields };
@@ -163,8 +174,12 @@ export async function submitRegistrationStep(
         return { error: "Student ID must be 9-10 digits.", fields };
       }
 
-      if (faculty.length == 0) {
+      if (faculty.length == 0 && !otherFaculty) {
         return { error: "Please select at least 1 faculty.", fields };
+      }
+
+      if (faculty.includes("other") && !otherFaculty) {
+        return { error: "Please specify your other faculty.", fields };
       }
 
       if (!programme) {
@@ -231,6 +246,12 @@ export async function submitRegistrationStep(
 
       if (!linuxSkillLevel) {
         return { error: "Linux knowledge is required.", fields };
+      }
+
+      // Merge otherFaculty to faculty if needed
+      if (prev.otherFaculty) {
+        const withoutOther = (prev.faculty ?? []).filter((f) => f !== "other");
+        prev.faculty = [...withoutOther, prev.otherFaculty];
       }
 
       // Merge final step data with full draft
