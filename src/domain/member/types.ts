@@ -18,7 +18,7 @@ export type YearLevel =
   | "THIRD_YEAR"
   | "FOURTH_YEAR"
   | "FIFTH_YEAR_OR_LATER"
-  | "GRADUATED_WITHIN_2_YEARS"; // was "POSTGRADUATE" - corrected from Prisma
+  | "GRADUATED_WITHIN_2_YEARS"; // was "POSTGRADUATE" - corrected using the Prisma schema
 
 // Shared base fields present on every registration path
 export type BaseMemberRegistration = {
@@ -26,7 +26,7 @@ export type BaseMemberRegistration = {
   lastName: string;
   email: string;
 
-  discordUsername?: string; // the missing optional field William mentioned
+  discordUsername?: string; //the missing field
   linuxSkillLevel: LinuxSkillLevel;
   potentialInvolvement: PotentialInvolvement[];
 };
