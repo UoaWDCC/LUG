@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Fira_Code, Lato } from "next/font/google";
 import "./globals.css";
 
 import NavBar from "@/components/layout/NavBar";
-import Footer from "@/components/layout/Footer";
-import Container from "@/components/primitive/Container";
 
-const primaryFont = Geist({
-  variable: "--font-primary",
+const firaCode = Fira_Code({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
+
+const lato = Lato({
+  variable: "--font-sans",
+  weight: ["400", "700", "900"],
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "UoA Linux User Group",
-  description: "Website for UoA Linux User Group",
+  title: "LUG@UoA — Linux Users Group at University of Auckland",
+  description:
+    "A club where we build, share, and talk about Linux, the free and open source operating system.",
 };
 
 export default function RootLayout({
@@ -22,15 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={primaryFont.variable}>
-      <body className="bg-white text-black">
-        <div className="flex flex-col min-h-screen">
+    <html lang="en" className={`${firaCode.variable} ${lato.variable}`}>
+      <body className="bg-black text-white">
+        <div className="relative flex flex-col h-screen overflow-hidden">
           <NavBar />
-          <main className="flex-1">
-            <Container>{children}</Container>
-          </main>
-          {/* flex-1 ensures page content takes up the full space between navbar and footer */}
-          <Footer />
+          <main className="flex-1 overflow-hidden">{children}</main>
         </div>
       </body>
     </html>

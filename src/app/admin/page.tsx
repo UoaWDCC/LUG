@@ -1,11 +1,12 @@
+import Container from "@/components/primitive/Container";
+
 export default function Admin() {
   return (
-    <div>
-      <section>
-        <h1>Admin</h1>
-
-        <p>Placeholder Admin</p>
+    <Container>
+      <section className="pt-32 pb-16">
+        <h1 className="font-mono text-4xl font-bold mb-4">Admin</h1>
+        <p className="text-white/80">Placeholder Admin</p>
       </section>
-    </div>
+    </Container>
   );
 }

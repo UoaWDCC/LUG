@@ -1,31 +1,179 @@
 @import "tailwindcss";
 
+/* LUG brand palette, dark default */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --color-bg: #000000;
+  --color-content: #ffffff;
+  --color-alt-bg: #1f6654; /* terminal button bg */
+  --color-accent: #3fcca8; /* accent: arrows, subheading, hover */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* extra colors */
+  --color-yellow: #ffa300;
+  --color-cream: #e6e6e6;
+  --color-light-blue: #6290c3;
+  --color-navy: #1a1b41;
+  --color-crimson: #881600;
 
-  html {
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden; /* tells browser: if anything sticks out horizontally, don’t show, just clip it */
+  overflow-x: hidden;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-primary), system-ui, sans-serif;
+  color: var(--color-content);
+  background: var(--color-bg);
+  font-family: var(--font-mono), "Fira Code", ui-monospace, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* CSS animations */
+
+/* blink cursor */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--color-accent);
+  margin-left: 0.25em;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* fade up */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s ease-out forwards;
+}
+
+.fade-up-1 {
+  animation-delay: 0.05s;
+}
+.fade-up-2 {
+  animation-delay: 0.2s;
+}
+.fade-up-3 {
+  animation-delay: 0.35s;
+}
+.fade-up-4 {
+  animation-delay: 0.5s;
+}
+.fade-up-5 {
+  animation-delay: 0.65s;
+}
+.fade-up-6 {
+  animation-delay: 0.8s;
+}
+
+/* terminal glow pulse */
+@keyframes terminal-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 30px rgba(63, 204, 168, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 55px rgba(63, 204, 168, 0.35);
+  }
+}
+
+.terminal-glow {
+  animation: terminal-glow 4s ease-in-out infinite;
+}
+
+/* logo float */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* shimmer accent text */
+@keyframes shimmer {
+  0%,
+  100% {
+    text-shadow: 0 0 8px rgba(63, 204, 168, 0.35);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(63, 204, 168, 0.7);
+  }
+}
+
+.shimmer-accent {
+  color: var(--color-accent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* terminal menu button */
+.term-btn {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, auto) 1fr auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--color-alt-bg);
+  color: var(--color-content);
+  border-radius: 4px;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.1s ease,
+    box-shadow 0.25s ease;
+}
+
+.term-btn:hover {
+  background: var(--color-accent);
+  color: #00231b;
+  box-shadow: 0 0 22px rgba(63, 204, 168, 0.5);
+}
+
+.term-btn:active {
+  transform: scale(0.985);
+}
+
+.term-btn-arrow {
+  display: inline-block;
+  color: var(--color-accent);
+  transition:
+    transform 0.2s ease,
+    color 0.25s ease;
+}
+
+.term-btn:hover .term-btn-arrow {
+  transform: translateX(6px);
+  color: #00231b;
 }
