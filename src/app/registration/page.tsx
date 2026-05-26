@@ -16,7 +16,7 @@ export default async function FormPage() {
   const { page = "start" } = draft;
 
   return (
-    <section className="max-w-2x1 border-2 border-green-500">
+    <section className="max-w-2xl border-2 border-green-500">
       <h1>LUG@UoA Member Registration Form 2026</h1>
       <p className="mb-6">{`Thank you for registering your interest to become a member of the
           University of Auckland Linux User Group (also known as LUG@UoA)! It's
