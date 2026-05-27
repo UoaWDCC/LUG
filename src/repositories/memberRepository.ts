@@ -4,22 +4,23 @@ export async function createMembershipRegistration(
   registration: MemberRegistration,
 ) {
   const memberData = toMemberCreateInput(registration);
-
   try {
     await getPrisma().member.create({ data: memberData });
-    return Response.json({ ok: true });
+    return { ok: true };
   } catch (error: unknown) {
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        return Response.json({ ok: false, error: { type: "duplicate" } });
+        return { ok: false, error: { type: "duplicate" } };
       }
     }
 
-    return Response.json({ ok: false, error: { type: "database" } });
+    return { ok: false, error: { type: "database" } };
   }
 }
 
-function toMemberCreateInput(registration: MemberRegistration) {
+function toMemberCreateInput(
+  registration: MemberRegistration,
+): MemberCreateInput {
   const memberData = {
     // unconditonal fields
     firstName: registration.firstName,
@@ -29,31 +30,34 @@ function toMemberCreateInput(registration: MemberRegistration) {
     potentialInvolvement: registration.potentialInvolvement,
     discordUsername: registration.discordUsername,
 
-    // shared conditional fields
+    // shared conditional field
     isConditionalReturningMember: registration.isEligibleReturningUoaStudent,
-    isCurrentUoaStudent: registration.isCurrentUoaStudent,
   };
 
   const conditionalData = // non-shared conditional fields
-    registration instanceof CurrentUoaStudentMember
+    registration.isEligibleReturningUoaStudent === true
       ? {
-          faculty: registration.faculty,
-          programme: registration.programme,
-          yearLevel: registration.yearLevel,
+          faculty: [],
           upi: registration.upi,
           studentId: registration.studentId,
+          isCurrentUoaStudent: registration.isCurrentUoaStudent,
         }
-      : registration instanceof ConditionalReturningMember
+      : registration.isCurrentUoaStudent === true
         ? {
-            faculty: [],
+            faculty: registration.faculty,
+            programme: registration.programme,
+            yearLevel: registration.yearLevel,
             upi: registration.upi,
             studentId: registration.studentId,
+            isCurrentUoaStudent: registration.isCurrentUoaStudent,
           }
         : {
             faculty: [],
             primaryAffiliation: registration.primaryAffiliation,
             nonUoaExcerpt: registration.nonUoaExcerpt,
             nonUoaPitch: registration.nonUoaPitch,
+            isCurrentUoaStudent: registration.isCurrentUoaStudent,
           };
-  return { memberData, conditionalData };
+
+  return { ...memberData, ...conditionalData };
 }
