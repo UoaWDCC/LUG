@@ -18,43 +18,41 @@ export type YearLevel =
   | "THIRD_YEAR"
   | "FOURTH_YEAR"
   | "FIFTH_YEAR_OR_LATER"
-  | "GRADUATED_WITHIN_2_YEARS"; // was "POSTGRADUATE" - corrected using the Prisma schema
+  | "GRADUATED_WITHIN_2_YEARS";
 
 // Shared base fields present on every registration path
 export type BaseMemberRegistration = {
   firstName: string;
   lastName: string;
   email: string;
-
-  discordUsername?: string; //the missing field
+  discordUsername?: string;
   linuxSkillLevel: LinuxSkillLevel;
   potentialInvolvement: PotentialInvolvement[];
 };
 
 // Case 1: Returning member - Registration path 1
 export type ConditionalReturningMember = BaseMemberRegistration & {
-  memberType: "RETURNING";
   isConditionalReturningMember: true;
-  upi?: string;
-  studentId?: string;
+  upi: string;
+  studentId: string;
 };
 
 // Case 2: Current UoA student - Registration path 2
 export type CurrentUoaStudentMember = BaseMemberRegistration & {
-  memberType: "CURRENT_UOA_STUDENT";
+  isConditionalReturningMember: false;
   isCurrentUoaStudent: true;
-  upi?: string;
-  studentId?: string;
+  upi: string;
+  studentId: string;
   faculty: string[];
-  programme?: string;
+  programme: string;
   yearLevel: YearLevel;
 };
 
 // Case 3: Non-current UoA student - Registration path 3
 export type NonCurrentUoaStudentMember = BaseMemberRegistration & {
-  memberType: "NON_CURRENT_UOA_STUDENT";
+  isConditionalReturningMember: false;
   isCurrentUoaStudent: false;
-  primaryAffiliation?: string;
+  primaryAffiliation: string;
   nonUoaExcerpt?: string;
   nonUoaPitch?: string;
 };
