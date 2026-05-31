@@ -30,117 +30,45 @@ export function validateMemberRegistration(
 ):
   | { ok: true; data: MemberRegistration }
   | { ok: false; error: RegistrationFormValidationError } {
-  const requiredFields = hasRequiredFields(parsedRegistrationForm);
+  const requiredFields = validateRequiredFields(parsedRegistrationForm);
   if (requiredFields.hasRequiredFields === false) {
     return { ok: false, error: requiredFields.error };
   }
 
-  const fieldContent = validateFields(parsedRegistrationForm);
+  const fieldContent = validateFieldValues(parsedRegistrationForm);
   if (fieldContent.fieldsValid === false) {
     return { ok: false, error: fieldContent.error };
   }
 
-  return { ok: true, data: toMemberRegistrationObject(parsedRegistrationForm) };
-}
-function validateFields(
-  parsed: ParsedRegistrationFormSubmission,
-):
-  | { fieldsValid: true }
-  | { fieldsValid: false; error: RegistrationFormValidationError } {
-  if (!isValidEmail(parsed.email)) {
-    return {
-      fieldsValid: false,
-      error: {
-        message: `Email invalid: '${parsed.email}', please enter a valid email address`,
-      },
-    };
-  }
-  if (!isLinuxSkillLevel(parsed.linuxSkillLevel)) {
-    return {
-      fieldsValid: false,
-      error: {
-        message: `linuxSkillLevel property has invalid value: '${parsed.linuxSkillLevel}'`,
-      },
-    };
-  }
-  for (const option of parsed.potentialInvolvement) {
-    if (!isPotentialInvolvement(option)) {
-      return {
-        fieldsValid: false,
-        error: {
-          message: `potentialInvolvement field contains a selection with invalid value: '${option}'`,
-        },
-      };
-    }
-  }
-
-  if (
-    parsed.isConditionalReturningMember === "true" ||
-    parsed.isCurrentUoaStudent === "true"
-  ) {
-    if (!isValidUPI(parsed.upi!)) {
-      return {
-        fieldsValid: false,
-        error: {
-          message: `upi invalid: '${parsed.upi}', please enter a valid upi`,
-        },
-      };
-    }
-  }
-  if (parsed.isCurrentUoaStudent === "true") {
-    if (!isYearLevel(parsed.yearLevel)) {
-      return {
-        fieldsValid: false,
-        error: {
-          message: `yearLevel property has invalid value: ${parsed.yearLevel}`,
-        },
-      };
-    }
-  }
-
-  return { fieldsValid: true };
-}
-
-function isValidUPI(upi: string): boolean {
-  const upiRegex = /^[A-Za-z]{3,4}[0-9]{3}$/;
-  return upiRegex.test(upi);
-}
-
-function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (email.length > 254) {
-    return false;
-  }
-  return emailRegex.test(email);
-}
-
-function isLinuxSkillLevel(value: string | null): value is LinuxSkillLevel {
-  return (
-    value != null && validLinuxSkillLevel.includes(value as LinuxSkillLevel)
-  );
-}
-
-function isYearLevel(value: string | null): value is YearLevel {
-  return value != null && validYearLevel.includes(value as YearLevel);
-}
-
-function isPotentialInvolvement(
-  value: string | null,
-): value is PotentialInvolvement {
-  return (
-    value != null &&
-    validPotentialInvolvement.includes(value as PotentialInvolvement)
-  );
+  return { ok: true, data: toMemberRegistration(parsedRegistrationForm) };
 }
 
 //validate if required fields exist and are not null/empty string/undefined etc.
-function hasRequiredFields(
+function validateRequiredFields(
   parsed: ParsedRegistrationFormSubmission,
 ):
   | { hasRequiredFields: true }
   | { hasRequiredFields: false; error: RegistrationFormValidationError } {
   //Base fields required by all registrations
+  const baseRequiredFields = validateBaseRequiredFields(parsed);
+  if (baseRequiredFields.hasRequiredFields === false) {
+    return baseRequiredFields;
+  }
 
+  const conditionalRequiredFields =
+    validateRegistrationPathRequiredFields(parsed);
+  if (conditionalRequiredFields.hasRequiredFields === false) {
+    return conditionalRequiredFields;
+  }
+
+  return { hasRequiredFields: true };
+}
+
+function validateBaseRequiredFields(
+  parsed: ParsedRegistrationFormSubmission,
+):
+  | { hasRequiredFields: true }
+  | { hasRequiredFields: false; error: RegistrationFormValidationError } {
   const requiredFields: string[] = [
     "firstName",
     "lastName",
@@ -178,7 +106,14 @@ function hasRequiredFields(
       },
     };
   }
+  return { hasRequiredFields: true };
+}
 
+function validateRegistrationPathRequiredFields(
+  parsed: ParsedRegistrationFormSubmission,
+):
+  | { hasRequiredFields: true }
+  | { hasRequiredFields: false; error: RegistrationFormValidationError } {
   //check if the value of isConditionalReturningMember and isCurrentUoaStudent is valid.
   //It is a validity check(thus should be in validateFields function) but is required for the following checks so is moved here.
   if (
@@ -278,50 +213,94 @@ function hasRequiredFields(
   return { hasRequiredFields: true };
 }
 
-function toMemberRegistrationObject(
+function validateFieldValues(
+  parsed: ParsedRegistrationFormSubmission,
+):
+  | { fieldsValid: true }
+  | { fieldsValid: false; error: RegistrationFormValidationError } {
+  if (!isValidEmail(parsed.email)) {
+    return {
+      fieldsValid: false,
+      error: {
+        message: `Email invalid: '${parsed.email}', please enter a valid email address`,
+      },
+    };
+  }
+  if (!isLinuxSkillLevel(parsed.linuxSkillLevel)) {
+    return {
+      fieldsValid: false,
+      error: {
+        message: `linuxSkillLevel property has invalid value: '${parsed.linuxSkillLevel}'`,
+      },
+    };
+  }
+  for (const option of parsed.potentialInvolvement) {
+    if (!isPotentialInvolvement(option)) {
+      return {
+        fieldsValid: false,
+        error: {
+          message: `potentialInvolvement field contains a selection with invalid value: '${option}'`,
+        },
+      };
+    }
+  }
+
+  if (
+    parsed.isConditionalReturningMember === "true" ||
+    parsed.isCurrentUoaStudent === "true"
+  ) {
+    if (!isValidUPI(parsed.upi!)) {
+      return {
+        fieldsValid: false,
+        error: {
+          message: `upi invalid: '${parsed.upi}', please enter a valid upi`,
+        },
+      };
+    }
+  }
+  if (parsed.isCurrentUoaStudent === "true") {
+    if (!isYearLevel(parsed.yearLevel)) {
+      return {
+        fieldsValid: false,
+        error: {
+          message: `yearLevel property has invalid value: ${parsed.yearLevel}`,
+        },
+      };
+    }
+  }
+
+  return { fieldsValid: true };
+}
+
+function toMemberRegistration(
   parsedForm: ParsedRegistrationFormSubmission,
 ): MemberRegistration {
   if (parsedForm.isConditionalReturningMember === "true") {
     return toConditionalReturningMember(parsedForm);
   } else if (parsedForm.isCurrentUoaStudent === "true") {
-    return toCurrentUoaStudent(parsedForm);
+    return toCurrentUoaStudentMember(parsedForm);
   } else {
     return toNonCurrentUoaStudentMember(parsedForm);
   }
-}
-
-function toNonCurrentUoaStudentMember(
-  parsed: ParsedRegistrationFormSubmission,
-): NonCurrentUoaStudentMember {
-  const nonUoaMember: NonCurrentUoaStudentMember = {
-    ...toBaseMember(parsed),
-    isConditionalReturningMember: false,
-    isCurrentUoaStudent: false,
-    primaryAffiliation: parsed.primaryAffiliation!,
-    ...(parsed.nonUoaExcerpt != null
-      ? { nonUoaExcerpt: parsed.nonUoaExcerpt }
-      : {}),
-    ...(parsed.nonUoaPitch != null ? { nonUoaPitch: parsed.nonUoaPitch } : {}),
-  };
-  return nonUoaMember;
 }
 
 function toConditionalReturningMember(
   parsed: ParsedRegistrationFormSubmission,
 ): ConditionalReturningMember {
   const returningMember: ConditionalReturningMember = {
-    ...toBaseMember(parsed),
+    ...toBaseMemberRegistration(parsed),
     isConditionalReturningMember: true,
     upi: parsed.upi!,
     studentId: parsed.studentId!,
   };
   return returningMember;
 }
-function toCurrentUoaStudent(
+
+function toCurrentUoaStudentMember(
   parsed: ParsedRegistrationFormSubmission,
 ): CurrentUoaStudentMember {
   const uoaMember: CurrentUoaStudentMember = {
-    ...toBaseMember(parsed),
+    ...toBaseMemberRegistration(parsed),
     isConditionalReturningMember: false,
     isCurrentUoaStudent: true,
 
@@ -333,7 +312,23 @@ function toCurrentUoaStudent(
   };
   return uoaMember;
 }
-function toBaseMember(
+function toNonCurrentUoaStudentMember(
+  parsed: ParsedRegistrationFormSubmission,
+): NonCurrentUoaStudentMember {
+  const nonUoaMember: NonCurrentUoaStudentMember = {
+    ...toBaseMemberRegistration(parsed),
+    isConditionalReturningMember: false,
+    isCurrentUoaStudent: false,
+    primaryAffiliation: parsed.primaryAffiliation!,
+    ...(parsed.nonUoaExcerpt != null
+      ? { nonUoaExcerpt: parsed.nonUoaExcerpt }
+      : {}),
+    ...(parsed.nonUoaPitch != null ? { nonUoaPitch: parsed.nonUoaPitch } : {}),
+  };
+  return nonUoaMember;
+}
+
+function toBaseMemberRegistration(
   parsed: ParsedRegistrationFormSubmission,
 ): BaseMemberRegistration {
   const baseRegistration: BaseMemberRegistration = {
@@ -349,4 +344,36 @@ function toBaseMember(
       : {}),
   };
   return baseRegistration;
+}
+
+function isValidUPI(upi: string): boolean {
+  const upiRegex = /^[A-Za-z]{3,4}[0-9]{3}$/;
+  return upiRegex.test(upi);
+}
+
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (email.length > 254) {
+    return false;
+  }
+  return emailRegex.test(email);
+}
+
+function isLinuxSkillLevel(value: string | null): value is LinuxSkillLevel {
+  return (
+    value != null && validLinuxSkillLevel.includes(value as LinuxSkillLevel)
+  );
+}
+
+function isYearLevel(value: string | null): value is YearLevel {
+  return value != null && validYearLevel.includes(value as YearLevel);
+}
+
+function isPotentialInvolvement(
+  value: string | null,
+): value is PotentialInvolvement {
+  return (
+    value != null &&
+    validPotentialInvolvement.includes(value as PotentialInvolvement)
+  );
 }
