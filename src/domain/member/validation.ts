@@ -1,5 +1,3 @@
-import { PotentialInvolvement } from "@/generated/prisma/enums";
-
 const validYearLevel = [
   "FIRST_YEAR",
   "SECOND_YEAR",
@@ -33,12 +31,12 @@ export function validateMemberRegistration(
   | { ok: true; data: MemberRegistration }
   | { ok: false; error: RegistrationFormValidationError } {
   const requiredFields = hasRequiredFields(parsedRegistrationForm);
-  if (requiredFields.hasRequiredFields == false) {
+  if (requiredFields.hasRequiredFields === false) {
     return { ok: false, error: requiredFields.error };
   }
 
   const fieldContent = validateFields(parsedRegistrationForm);
-  if (fieldContent.fieldsValid == false) {
+  if (fieldContent.fieldsValid === false) {
     return { ok: false, error: fieldContent.error };
   }
 
@@ -57,9 +55,7 @@ function validateFields(
       },
     };
   }
-  if (
-    !validLinuxSkillLevel.includes(parsed.linuxSkillLevel as LinuxSkillLevel)
-  ) {
+  if (!isLinuxSkillLevel(parsed.linuxSkillLevel)) {
     return {
       fieldsValid: false,
       error: {
@@ -68,7 +64,7 @@ function validateFields(
     };
   }
   for (const option of parsed.potentialInvolvement) {
-    if (!validPotentialInvolvement.includes(option)) {
+    if (!isPotentialInvolvement(option)) {
       return {
         fieldsValid: false,
         error: {
@@ -79,22 +75,24 @@ function validateFields(
   }
 
   if (
-    parsed.isCurrentUoaStudent == "true" ||
-    parsed.isEligibleReturningUoaStudent == "true"
+    parsed.isConditionalReturningMember === "true" ||
+    parsed.isCurrentUoaStudent === "true"
   ) {
-    if (!validYearLevel.includes(parsed.yearLevel as YearLevel)) {
-      return {
-        fieldsValid: false,
-        error: {
-          message: `yearLevel property has invalid value: ${parsed.yearLevel}`,
-        },
-      };
-    }
     if (!isValidUPI(parsed.upi!)) {
       return {
         fieldsValid: false,
         error: {
           message: `upi invalid: '${parsed.upi}', please enter a valid upi`,
+        },
+      };
+    }
+  }
+  if (parsed.isCurrentUoaStudent === "true") {
+    if (!isYearLevel(parsed.yearLevel)) {
+      return {
+        fieldsValid: false,
+        error: {
+          message: `yearLevel property has invalid value: ${parsed.yearLevel}`,
         },
       };
     }
@@ -116,6 +114,25 @@ function isValidEmail(email: string): boolean {
   return emailRegex.test(email);
 }
 
+function isLinuxSkillLevel(value: string | null): value is LinuxSkillLevel {
+  return (
+    value != null && validLinuxSkillLevel.includes(value as LinuxSkillLevel)
+  );
+}
+
+function isYearLevel(value: string | null): value is YearLevel {
+  return value != null && validYearLevel.includes(value as YearLevel);
+}
+
+function isPotentialInvolvement(
+  value: string | null,
+): value is PotentialInvolvement {
+  return (
+    value != null &&
+    validPotentialInvolvement.includes(value as PotentialInvolvement)
+  );
+}
+
 //validate if required fields exist and are not null/empty string/undefined etc.
 function hasRequiredFields(
   parsed: ParsedRegistrationFormSubmission,
@@ -130,8 +147,7 @@ function hasRequiredFields(
     "email",
     "linuxSkillLevel",
     "potentialInvolvement",
-    "isEligibleReturningUoaStudent",
-    "isCurrentUoaStudent",
+    "isConditionalReturningMember",
   ];
   const errorDisplayNames: string[] = [
     "First name",
@@ -139,8 +155,7 @@ function hasRequiredFields(
     "Email",
     "Linux skill level",
     "Potential involvement",
-    "Is eligible returning Uoa student",
-    "Is current Uoa student",
+    "Is Conditional Returning Member",
   ];
   for (const field of requiredFields) {
     if (!(field in parsed) || !parsed[field as keyof typeof parsed]) {
@@ -164,30 +179,42 @@ function hasRequiredFields(
     };
   }
 
-  //check if the value of isEligibleReturningUoaStudent and isCurrentUoaStudent is valid.
+  //check if the value of isConditionalReturningMember and isCurrentUoaStudent is valid.
   //It is a validity check(thus should be in validateFields function) but is required for the following checks so is moved here.
   if (
-    !["true", "false"].includes(parsed.isEligibleReturningUoaStudent as string)
+    !["true", "false"].includes(parsed.isConditionalReturningMember as string)
   ) {
     return {
       hasRequiredFields: false,
       error: {
-        message: `isEligibleReturningUoaStudent field has value: '${parsed.isEligibleReturningUoaStudent}' must either have value 'true' or 'false'`,
-      },
-    };
-  }
-  if (!["true", "false"].includes(parsed.isCurrentUoaStudent as string)) {
-    return {
-      hasRequiredFields: false,
-      error: {
-        message:
-          "isCurrentUoaStudent field must either have value 'true' or 'false'",
+        message: `isConditionalReturningMember field has value: '${parsed.isConditionalReturningMember}', must either have value 'true' or 'false'`,
       },
     };
   }
 
+  // If Conditional Returning Member is false, then isCurrentUoaStudent becomes a required field
+  if (parsed.isConditionalReturningMember === "false") {
+    if (!("isCurrentUoaStudent" in parsed) || !parsed.isCurrentUoaStudent) {
+      return {
+        hasRequiredFields: false,
+        error: {
+          message:
+            "'isCurrentUoaStudent' field is required if not a Conditional Returning Member",
+        },
+      };
+    }
+    if (!["true", "false"].includes(parsed.isCurrentUoaStudent as string)) {
+      return {
+        hasRequiredFields: false,
+        error: {
+          message: `isCurrentUoaStudent field has value: '${parsed.isCurrentUoaStudent}', must either have value 'true' or 'false'`,
+        },
+      };
+    }
+  }
+
   // Further check for fields that are only required if specific conditions are met
-  if (parsed.isEligibleReturningUoaStudent == "true") {
+  if (parsed.isConditionalReturningMember === "true") {
     if (!("upi" in parsed) || !parsed.upi) {
       return {
         hasRequiredFields: false,
@@ -200,7 +227,7 @@ function hasRequiredFields(
         error: { message: "Student ID field is required for Uoa students" },
       };
     }
-  } else if (parsed.isCurrentUoaStudent == "true") {
+  } else if (parsed.isCurrentUoaStudent === "true") {
     const requiredFieldsUoa = [
       "upi",
       "studentId",
@@ -227,7 +254,17 @@ function hasRequiredFields(
         };
       }
     }
-  } else if (parsed.isCurrentUoaStudent == "false") {
+
+    //Extra check for if faculty is empty, at this point existence of faculty field is verified.
+    if (parsed.faculty!.length === 0) {
+      return {
+        hasRequiredFields: false,
+        error: {
+          message: "'faculty' field must not be an empty array",
+        },
+      };
+    }
+  } else if (parsed.isCurrentUoaStudent === "false") {
     if (!("primaryAffiliation" in parsed) || !parsed.primaryAffiliation) {
       return {
         hasRequiredFields: false,
@@ -244,9 +281,9 @@ function hasRequiredFields(
 function toMemberRegistrationObject(
   parsedForm: ParsedRegistrationFormSubmission,
 ): MemberRegistration {
-  if (parsedForm.isEligibleReturningUoaStudent == "true") {
+  if (parsedForm.isConditionalReturningMember === "true") {
     return toConditionalReturningMember(parsedForm);
-  } else if (parsedForm.isCurrentUoaStudent == "true") {
+  } else if (parsedForm.isCurrentUoaStudent === "true") {
     return toCurrentUoaStudent(parsedForm);
   } else {
     return toNonCurrentUoaStudentMember(parsedForm);
@@ -258,7 +295,7 @@ function toNonCurrentUoaStudentMember(
 ): NonCurrentUoaStudentMember {
   const nonUoaMember: NonCurrentUoaStudentMember = {
     ...toBaseMember(parsed),
-    isEligibleReturningUoaStudent: false,
+    isConditionalReturningMember: false,
     isCurrentUoaStudent: false,
     primaryAffiliation: parsed.primaryAffiliation!,
     ...(parsed.nonUoaExcerpt != null
@@ -274,7 +311,7 @@ function toConditionalReturningMember(
 ): ConditionalReturningMember {
   const returningMember: ConditionalReturningMember = {
     ...toBaseMember(parsed),
-    isEligibleReturningUoaStudent: true,
+    isConditionalReturningMember: true,
     upi: parsed.upi!,
     studentId: parsed.studentId!,
   };
@@ -285,7 +322,7 @@ function toCurrentUoaStudent(
 ): CurrentUoaStudentMember {
   const uoaMember: CurrentUoaStudentMember = {
     ...toBaseMember(parsed),
-    isEligibleReturningUoaStudent: false,
+    isConditionalReturningMember: false,
     isCurrentUoaStudent: true,
 
     upi: parsed.upi!,
